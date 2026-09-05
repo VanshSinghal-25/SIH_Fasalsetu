@@ -1,0 +1,3134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FasalSetu — Complete Digital Agri-Market & Logistics Platform</title>
+
+<style>
+:root {
+  --green: #17844a;
+  --green-dark: #123d2a;
+  --green-mid: #1d5b3e;
+  --green-hover: #28714b;
+  --green-accent: #8be28f;
+  --bg: #f4f8f5;
+  --ink: #17324d;
+  --muted: #62746a;
+  --border: #dce8df;
+  --orange: #db7b12;
+  --blue: #1971c2;
+  --red: #d9534f;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+button, input, select, textarea { font: inherit; }
+.hidden { display: none !important; }
+
+/* Language Switcher */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: #e9f5ed;
+  border: 1px solid #cce5d5;
+  border-radius: 999px;
+  padding: 3px 5px;
+  gap: 3px;
+}
+.lang-btn {
+  border: 0;
+  background: transparent;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--green-dark);
+}
+.lang-btn.active {
+  background: var(--green);
+  color: var(--white);
+}
+
+/* Auth Screens */
+#auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(135deg, #e9f8ed, #f7fbf8);
+}
+.auth-wrap {
+  width: 100%;
+  max-width: 1060px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  background: var(--white);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(18, 61, 42, 0.12);
+}
+.auth-brand {
+  background: var(--green-dark);
+  color: var(--white);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.auth-brand h1 { font-size: 36px; margin: 0 0 8px; }
+.auth-brand h1 span { color: var(--green-accent); }
+.auth-brand h2 { font-size: 20px; margin: 18px 0 10px; color: #e1f5e6; }
+.auth-brand p { color: #d8eadf; line-height: 1.6; font-size: 14px; }
+.features div { margin: 12px 0; font-size: 13.5px; }
+
+.auth-box { padding: 36px 40px; max-height: 90vh; overflow-y: auto; }
+.auth-box h2 { margin: 0 0 4px; font-size: 24px; }
+.tabs { display: flex; gap: 6px; margin: 18px 0 14px; }
+.tabs button {
+  flex: 1;
+  border: 0;
+  padding: 10px;
+  border-radius: 9px;
+  background: #eef4ef;
+  cursor: pointer;
+  font-weight: 700;
+  color: #35604a;
+}
+.tabs button.active { background: var(--green); color: var(--white); }
+
+.field { margin: 12px 0; position: relative; }
+.field label { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 4px; color: #234333; }
+.input-with-voice { display: flex; gap: 6px; align-items: center; }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8e4dc;
+  border-radius: 9px;
+  outline: none;
+  background: #fff;
+}
+.mic-btn {
+  background: #eaf5ee;
+  border: 1px solid #c2e2cc;
+  border-radius: 9px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.mic-btn:hover { background: #d3ecd9; }
+.error-border { border-color: var(--red) !important; background: #fff5f5 !important; }
+.error-msg { color: var(--red); font-size: 11.5px; margin-top: 3px; display: none; }
+
+.primary-btn {
+  width: 100%;
+  border: 0;
+  background: var(--green);
+  color: var(--white);
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.primary-btn:hover { background: var(--green-hover); }
+
+/* Core Layout */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--green-dark);
+  color: var(--white);
+  padding: 20px 12px;
+  z-index: 5;
+  overflow-y: auto;
+}
+.logo { font-size: 22px; font-weight: 800; margin: 4px 10px 16px; }
+.logo span { color: var(--green-accent); }
+.role-badge {
+  background: var(--green-mid);
+  border: 1px solid #3b7658;
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin: 0 4px 14px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #d9eee1;
+  text-align: left;
+  padding: 9.5px 12px;
+  border-radius: 8px;
+  margin: 2px 0;
+  cursor: pointer;
+  font-size: 13.5px;
+}
+nav button.active, nav button:hover { background: var(--green-hover); color: var(--white); }
+
+.main {
+  margin-left: 260px;
+  padding: 24px 32px 50px;
+  max-width: 1440px;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.topbar h1 { margin: 0; font-size: 24px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.voice-assist-btn {
+  background: #237a4b;
+  border: 0;
+  color: white;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+.user-badge {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.page { display: none; }
+.page.active { display: block; }
+
+/* Reusable Components */
+.hero {
+  background: linear-gradient(120deg, #e7f8ea, #f8fff8);
+  border: 1px solid #cce8d1;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+}
+.hero h2 { margin: 0 0 6px; font-size: 21px; }
+.muted { color: var(--muted); font-size: 12.5px; }
+
+.grid { display: grid; gap: 16px; }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g2 { grid-template-columns: 1.25fr 0.75fr; }
+.g-equal { grid-template-columns: 1fr 1fr; }
+
+.card {
+  background: var(--white);
+  border: 1px solid #e1ebe5;
+  border-radius: 15px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 15px rgba(23, 50, 77, 0.03);
+}
+.card h2, .card h3 { margin-top: 0; }
+.metric { font-size: 24px; font-weight: 800; margin-top: 5px; }
+.green { color: var(--green); }
+.orange { color: var(--orange); }
+.blue { color: var(--blue); }
+
+.btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  background: var(--green);
+  color: var(--white);
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn:hover { background: #136a3a; }
+.btn.secondary { background: #eaf4ee; color: #17633a; }
+.btn.small { font-size: 12px; padding: 6px 10px; border-radius: 6px; }
+.btn.danger { background: #d9534f; color: white; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #edf1ee; font-size: 12.5px; }
+th { color: var(--muted); font-weight: 600; }
+
+.badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: #e9f7ed;
+  color: #17703d;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-block;
+}
+.badge.assigned { background: #fff3d9; color: #9b6500; }
+.badge.grade { background: #e7eff8; color: #1c528a; }
+.badge.high { background: #ffe9e8; color: #c92a2a; }
+
+.row { display: flex; align-items: center; gap: 10px; }
+.row.space { justify-content: space-between; }
+
+.chain { display: flex; align-items: center; gap: 6px; margin-top: 12px; }
+.node {
+  flex: 1;
+  text-align: center;
+  border: 1px solid #dce8df;
+  border-radius: 10px;
+  padding: 10px 6px;
+  background: #fbfdfb;
+}
+.node b { display: block; font-size: 14px; margin-top: 2px; }
+.arrow { color: #8a9b91; font-weight: 800; font-size: 14px; }
+
+.bar { height: 10px; background: #e8efe9; border-radius: 10px; overflow: hidden; }
+.bar i, .bar .fill { display: block; height: 100%; border-radius: 10px; }
+.fgreen { background: var(--green); }
+.forange { background: var(--orange); }
+.fblue { background: var(--blue); }
+
+.circle-score {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--green); color: white;
+  display: grid; place-items: center; font-size: 24px; font-weight: 800;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.product {
+  background: white;
+  border: 1px solid #e1ebe5;
+  border-radius: 15px;
+  padding: 18px;
+}
+.product .emoji { font-size: 40px; }
+.product h3 { margin: 8px 0; }
+.offer { font-size: 20px; font-weight: bold; color: var(--green); }
+
+.alert { padding: 12px; border-radius: 10px; background: #fff8e8; border: 1px solid #f2dfb4; font-size: 12.5px; }
+.alert.ok { background: #edf8f1; border-color: #cfe8d8; }
+
+/* Transport Map & Track */
+.vehicle {
+  border: 1px solid #dfe9e2;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 10px 0;
+  background: #fbfdfb;
+}
+.vehicle.selected { border: 2px solid #238c55; background: #f0faf3; }
+.vehicle-header { display: flex; justify-content: space-between; align-items: center; }
+.cost { color: #168447; font-weight: 800; font-size: 18px; }
+.pricing-explainer { font-size: 11px; color: #557262; background: #eaf5ee; border-radius: 6px; padding: 4px 8px; margin-top: 4px; }
+
+.map {
+  height: 220px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e8f4eb, #dcece1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d4e3d8;
+}
+.road { position: absolute; height: 8px; background: white; border: 2px solid #a9c3b2; width: 90%; top: 105px; left: 5%; transform: rotate(-18deg); }
+.pin { position: absolute; font-size: 26px; }
+.farm { left: 8%; top: 130px; }
+.hub { left: 47%; top: 75px; }
+.buyer { right: 8%; top: 35px; }
+
+.track-line { display: flex; align-items: flex-start; justify-content: space-between; position: relative; }
+.track-line:before { content: ""; position: absolute; top: 14px; left: 6%; right: 6%; height: 3px; background: #dfe9e2; z-index: 0; }
+.track-item { position: relative; z-index: 1; width: 24%; text-align: center; }
+.dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #dfe9e2; color: white; display: grid; place-items: center;
+  margin: 0 auto 6px; font-size: 12px; font-weight: 700;
+}
+.dot.done { background: #238c55; }
+.dot.current { background: #e49a20; }
+.status-box { background: #f0faf3; border: 1px solid #cce8d1; padding: 12px; border-radius: 10px; margin-top: 14px; font-size: 12.5px; }
+
+/* Photo Uploader */
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
+.photo-slot {
+  border: 2px dashed #b8d4c2; border-radius: 10px; padding: 18px 10px;
+  text-align: center; background: #fdfefe; cursor: pointer;
+}
+.photo-slot:hover { border-color: var(--green); background: #f5faf6; }
+
+.toast {
+  position: fixed; right: 24px; bottom: 24px;
+  background: #173d2e; color: #fff; padding: 12px 18px;
+  border-radius: 10px; display: none; font-size: 13px; z-index: 100;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+}
+
+@media(max-width: 960px) {
+  .auth-wrap { grid-template-columns: 1fr; }
+  .auth-brand { display: none; }
+  .sidebar { width: 68px; padding: 16px 6px; }
+  .logo { font-size: 0; margin-bottom: 12px; }
+  .logo:before { content: "🌱"; font-size: 22px; }
+  .role-badge, nav button span { display: none; }
+  .main { margin-left: 68px; padding: 16px; }
+  .g4, .g3, .g2, .g-equal { grid-template-columns: 1fr; }
+}
+
+/* ================= BUYERS TABLE UI (MATCHED) ================= */
+.buyers-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 18px rgba(23, 50, 77, 0.04);
+}
+.buyers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.buyers-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.sort-select {
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+.buyers-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+.buyers-table th {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid #edf1ee;
+  background: transparent;
+}
+.buyer-row {
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.buyer-row:hover {
+  background: #fafdfa;
+}
+.buyer-row.direct-buyer-highlight {
+  background: #eef8f2 !important;
+  border-radius: 12px;
+}
+.buyer-row.direct-buyer-highlight td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.buyer-row.direct-buyer-highlight td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.buyer-row td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f4f1;
+  vertical-align: middle;
+  font-size: 13px;
+}
+.buyer-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.buyer-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #e6ede8;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.buyer-avatar.logo-icon {
+  background: #d8f1e1;
+  font-size: 22px;
+}
+.buyer-meta b {
+  display: block;
+  font-size: 14px;
+  color: #1a2f24;
+}
+.buyer-meta small {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+.type-pill {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-block;
+}
+.type-pill.middleman {
+  background: #fff0df;
+  color: #c96d00;
+}
+.type-pill.direct {
+  background: #dcf4e4;
+  color: #0f7a3f;
+}
+.price-bold {
+  font-size: 15px;
+  font-weight: 800;
+  color: #1a2f24;
+}
+.direct-green-text {
+  color: #0f7a3f !important;
+}
+.btn-select-sell {
+  border: 1.5px solid var(--green);
+  background: transparent;
+  color: var(--green);
+  padding: 8px 18px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-select-sell:hover {
+  background: #edf7f1;
+}
+.btn-select-sell.primary-fill {
+  background: var(--green);
+  color: #fff;
+}
+.btn-select-sell.primary-fill:hover {
+  background: var(--green-hover);
+}
+</style>
+</head>
+<body>
+
+<!-- ================= AUTH & REGISTRATION SCREEN ================= -->
+<section id="auth" class="screen">
+  <div class="auth-wrap">
+    <div class="auth-brand">
+      <h1>🌱 Fasal<span>Setu</span></h1>
+      <p id="authBrandDesc">Direct connection between farmers, wholesalers, and bulk food consumers with transparent pricing, logistics pooling, and crop grading.</p>
+      <h2 id="authBrandTagline">One Platform • Zero Intermediary Losses</h2>
+      <div class="features">
+        <div id="authFeat1">👨‍🌾 <b>Farmer Portal</b> — List crops with photo grading, live pooling & instant buyer bids</div>
+        <div id="authFeat2">🏢 <b>Traders & Wholesalers</b> — Dual-mode bulk procurement and downstream distribution</div>
+        <div id="authFeat3">🍽️ <b>Restaurants, Hotels & Hostels</b> — Direct buy-only kitchen procurement portal (50kg+ bulk lots)</div>
+        <div id="authFeat4">🚚 <b>Drivers & Fleet Partners</b> — Direct load claims, pooled routes & automated milestone PODs</div>
+      </div>
+    </div>
+    
+    <div class="auth-box">
+      <div class="row space">
+        <div class="lang-toggle">
+          <button class="lang-btn active" id="langAuthEn" onclick="setLanguage('en')">English</button>
+          <button class="lang-btn" id="langAuthHi" onclick="setLanguage('hi')">हिंदी</button>
+        </div>
+        <button class="mic-btn" title="Voice Assist" onclick="startVoiceInput('auth')">🎤</button>
+      </div>
+
+      <h2 id="authTitle" style="margin-top:14px">Account Login</h2>
+      <p class="muted" id="authSub">Access your verified FasalSetu account.</p>
+      
+      <div class="tabs">
+        <button id="loginTab" class="active" onclick="authMode('login')">Sign In</button>
+        <button id="signupTab" onclick="authMode('signup')">Sign Up</button>
+      </div>
+
+      <!-- ROLE SELECTION -->
+      <div class="field">
+        <label id="roleLabel">Select Role *</label>
+        <select id="roleSelect" onchange="toggleAuthFields()">
+          <option value="farmer">👨‍🌾 Farmer (किसान)</option>
+          <option value="wholesaler">🏢 Wholesaler / Trader / Retailer (Buy & Sell)</option>
+          <option value="consumer">🍽️ Restaurant / Hotel / Bulk Buyer (Buy Only)</option>
+          <option value="driver">🚚 Truck / Dumper Driver (Transport Partner)</option>
+        </select>
+      </div>
+
+      <!-- NAME FIELD -->
+      <div class="field">
+        <label id="nameLabel">Full Name / Business Name *</label>
+        <div class="input-with-voice">
+          <input id="userNameInput" placeholder="e.g. Kisan Mitra / Grand Vista Hotel">
+          <button class="mic-btn" onclick="listenToField('userNameInput')">🎤</button>
+        </div>
+        <div id="nameError" class="error-msg">Enter a valid full name.</div>
+      </div>
+
+      <!-- REGISTRATION EXTENDED FIELDS (FARMER) -->
+      <div id="signupFields" class="hidden">
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Village / District *</label>
+            <input id="villageInput" placeholder="e.g. Kisan Nagar, Sector 4">
+          </div>
+          <div class="field">
+            <label>State *</label>
+            <select id="stateInput">
+  <option value="" disabled selected>Select State / UT</option>
+  <!-- States -->
+  <option value="Andhra Pradesh">Andhra Pradesh</option>
+  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+  <option value="Assam">Assam</option>
+  <option value="Bihar">Bihar</option>
+  <option value="Chhattisgarh">Chhattisgarh</option>
+  <option value="Goa">Goa</option>
+  <option value="Gujarat">Gujarat</option>
+  <option value="Haryana">Haryana</option>
+  <option value="Himachal Pradesh">Himachal Pradesh</option>
+  <option value="Jharkhand">Jharkhand</option>
+  <option value="Karnataka">Karnataka</option>
+  <option value="Kerala">Kerala</option>
+  <option value="Madhya Pradesh">Madhya Pradesh</option>
+  <option value="Maharashtra">Maharashtra</option>
+  <option value="Manipur">Manipur</option>
+  <option value="Meghalaya">Meghalaya</option>
+  <option value="Mizoram">Mizoram</option>
+  <option value="Nagaland">Nagaland</option>
+  <option value="Odisha">Odisha</option>
+  <option value="Punjab">Punjab</option>
+  <option value="Rajasthan">Rajasthan</option>
+  <option value="Sikkim">Sikkim</option>
+  <option value="Tamil Nadu">Tamil Nadu</option>
+  <option value="Telangana">Telangana</option>
+  <option value="Tripura">Tripura</option>
+  <option value="Uttar Pradesh">Uttar Pradesh</option>
+  <option value="Uttarakhand">Uttarakhand</option>
+  <option value="West Bengal">West Bengal</option>
+
+  <!-- Union Territories -->
+  <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+  <option value="Chandigarh">Chandigarh</option>
+  <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+  <option value="Delhi">Delhi (NCT)</option>
+  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+  <option value="Ladakh">Ladakh</option>
+  <option value="Lakshadweep">Lakshadweep</option>
+  <option value="Puducherry">Puducherry</option>
+</select>
+          </div>
+        </div>
+
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Total Farm Area *</label>
+            <input id="farmAreaInput" placeholder="e.g. 4.5 Acres">
+          </div>
+          <div class="field">
+            <label>Main Crops *</label>
+            <input id="mainCropsInput" placeholder="e.g. Tomato, Wheat, Potato">
+          </div>
+        </div>
+
+        <div class="grid g-equal">
+          <div class="field">
+            <label>ID Document *</label>
+            <select id="idDocSelect">
+              <option value="kisan">Kisan Credit Card (KCC)</option>
+              <option value="voter">Voter ID</option>
+              <option value="pan">PAN Card</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Document Number *</label>
+            <input id="kycDocNum" placeholder="e.g. KCC-8829-102">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Bank UPI ID / Account Details *</label>
+          <input id="bankUpiInput" placeholder="e.g. kisan@upi or SBI A/C">
+        </div>
+      </div>
+
+      <!-- REGISTRATION EXTENDED FIELDS (WHOLESALER / TRADER) -->
+      <div id="traderSignupFields" class="hidden">
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Business Type *</label>
+            <select id="traderType">
+              <option>Wholesaler / Bulk Buyer</option>
+              <option>Commission Trader / Aggregator</option>
+              <option>Retailer / Supermarket Chain</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>GSTIN / Mandi Trade License *</label>
+            <input id="traderGst" placeholder="e.g. 06AAAAA0000A1Z5 / TR-882">
+          </div>
+        </div>
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Storage Location *</label>
+            <input id="traderLocation" placeholder="e.g. Mandi Yard, Gate 2, Rohtak">
+          </div>
+          <div class="field">
+            <label>Capacity (Metric Tonnes) *</label>
+            <input id="traderCapacity" placeholder="e.g. 50 MT (Cold/Dry)">
+          </div>
+        </div>
+      </div>
+
+      <!-- REGISTRATION EXTENDED FIELDS (BULK CONSUMER) -->
+      <div id="consumerSignupFields" class="hidden">
+        <div class="field">
+          <label>Consumer Type *</label>
+          <select id="consumerType">
+            <option>Restaurant</option>
+            <option>Hotel / Banquet</option>
+            <option>Hostel / PG Mess</option>
+            <option>Corporate Canteen</option>
+            <option>Institution / Hospital</option>
+            <option>Individual (Bulk Kitchen Buyer)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Kitchen / Delivery Address *</label>
+          <input id="cDeliveryAddr" placeholder="e.g. Kitchen Gate 3, Grand Vista Hotel, Sector 29">
+        </div>
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Location / Pincode *</label>
+            <input id="cPincode" placeholder="e.g. 122001">
+          </div>
+          <div class="field">
+            <label>Preferred Language *</label>
+            <select id="cPrefLang">
+  <option value="hi" selected>Hindi (हिंदी)</option>
+  <option value="en">English</option>
+  <option value="as">Assamese (অসমীয়া)</option>
+  <option value="bn">Bengali (বাংলা)</option>
+  <option value="bho">Bodo (बड़ो)</option>
+  <option value="doi">Dogri (डोगरी)</option>
+  <option value="gu">Gujarati (ગુજરાતી)</option>
+  <option value="kn">Kannada (ಕನ್ನಡ)</option>
+  <option value="ks">Kashmiri (कॉशुर / کٲشُر)</option>
+  <option value="kok">Konkani (कोंकणी)</option>
+  <option value="mai">Maithili (मैथिली)</option>
+  <option value="ml">Malayalam (മലയാളം)</option>
+  <option value="mni">Manipuri (মৈতৈলোন্ / Meitei)</option>
+  <option value="mr">Marathi (मराठी)</option>
+  <option value="ne">Nepali (नेपाली)</option>
+  <option value="or">Odia (ଓଡ଼ିଆ)</option>
+  <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+  <option value="sa">Sanskrit (संस्कृतम्)</option>
+  <option value="sat">Santali (ᱥᱟᱱᱛᱟᱲᱤ)</option>
+  <option value="sd">Sindhi (सिन्धी / سنڌي)</option>
+  <option value="ta">Tamil (தமிழ்)</option>
+  <option value="te">Telugu (తెలుగు)</option>
+  <option value="ur">Urdu (اُردُو)</option>
+</select>
+          </div>
+        </div>
+        <div class="field">
+          <label>UPI / Payment Details *</label>
+          <input id="cUpi" placeholder="e.g. hotelgrand@upi or Corporate NetBanking">
+        </div>
+      </div>
+
+      <!-- REGISTRATION EXTENDED FIELDS (DRIVER / TRANSPORT PARTNER) -->
+      <div id="driverSignupFields" class="hidden">
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Vehicle Type *</label>
+            <select id="dVehicleType">
+              <option>Mini Truck (Tata Ace / 1 Ton)</option>
+              <option>Truck (Tata 407 / 2-3 Ton)</option>
+              <option>Dumper (Bulk / Loose Cargo)</option>
+              <option>Bolero Maxi Pickup</option>
+              <option>Refrigerated Reefer Van</option>
+              <option>Tractor Trolley</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Vehicle Registration No. *</label>
+            <input id="dVehicleReg" placeholder="e.g. HR-26 AB 4521">
+          </div>
+        </div>
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Load Capacity *</label>
+            <input id="dCapacity" placeholder="e.g. 2.5 MT / 1000 Kg">
+          </div>
+          <div class="field">
+            <label>Driving License Number *</label>
+            <input id="dLicenseNum" placeholder="e.g. HR-0620230012345">
+          </div>
+        </div>
+        <div class="grid g-equal">
+          <div class="field">
+            <label>Base Location / Operating Area *</label>
+            <input id="dBaseLocation" placeholder="e.g. Rohtak - Mathura Corridor">
+          </div>
+          <div class="field">
+            <label>Ownership *</label>
+            <select id="dOwnership">
+              <option>Owner-Driver</option>
+              <option>Fleet Employed Driver</option>
+              <option>Attached to Transport Company</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Bank UPI ID / Account Details *</label>
+          <input id="dBankUpi" placeholder="e.g. driver@upi or SBI A/C">
+        </div>
+      </div>
+      
+      <!-- CONTACT FIELD -->
+      <div class="field">
+        <label id="contactLabel">Mobile Number (10 digits) or Email *</label>
+        <div class="input-with-voice">
+          <input id="contact" placeholder="10-digit Mobile">
+          <button class="mic-btn" onclick="listenToField('contact')">🎤</button>
+        </div>
+        <div id="contactError" class="error-msg">Enter valid 10-digit mobile or standard email.</div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="field">
+        <label id="pwdLabel">Password *</label>
+        <div class="input-with-voice">
+          <input type="password" id="password">
+          <button class="mic-btn" onclick="listenToField('password')">🎤</button>
+        </div>
+        <div id="passwordError" class="error-msg">Password must be at least 6 characters.</div>
+      </div>
+      
+      <button class="primary-btn" id="authBtn" onclick="validateAndEnterApp()">Sign In</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MAIN DASHBOARD APP ================= -->
+<section id="app" class="hidden">
+  <aside class="sidebar">
+    <div class="logo">🌱 Fasal<span>Setu</span></div>
+    <div class="role-badge">
+      <span id="sidebarRole">Verified User ✅</span>
+      <small style="color:var(--green-accent)" id="sidebarTier">Tier-1</small>
+    </div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="topbar-actions">
+        <div class="lang-toggle">
+          <button class="lang-btn active" id="langAppEn" onclick="setLanguage('en')">EN</button>
+          <button class="lang-btn" id="langAppHi" onclick="setLanguage('hi')">हिं</button>
+        </div>
+        <button class="voice-assist-btn" onclick="readCurrentPageAloud()">
+          🔊 <span id="voiceListenText">Listen</span>
+        </button>
+        <div class="user-badge" id="userLabel">User Profile ▾</div>
+        <button class="btn small danger" onclick="logout()">🚪 Log Out</button>
+      </div>
+    </div>
+    
+    <div id="pages"></div>
+  </main>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = " https://skewer-primal-moonstone.ngrok-free.dev/api";
+let currentUserId = null;
+let currentLang = 'en';
+let mode = 'login';
+let currentRole = 'farmer';
+
+/* State Data Structures */
+let farmerProfile = {
+  name: "Kisan Mitra",
+  phone: "98XXXXXXXX",
+  location: "Central Region, UP",
+  area: "4.5 Acres",
+  verified: true
+};
+
+let traderProfile = {
+  name: "Apex Agri Trade Co.",
+  type: "Wholesaler & Retail Distributor",
+  gst: "06AAAAA0000A1Z5",
+  location: "Sector 18 Food Hub",
+  capacity: "50 MT Cold Storage"
+};
+
+let consumerProfile = {
+  name: "Grand Vista Hotel & Banquet",
+  type: "Hotel / Commercial Kitchen",
+  pincode: "122001",
+  address: "Sector 29 Hub",
+  verified: true
+};
+
+let driverProfile = {
+  name: "Ramesh Kumar",
+  vehicleType: "Truck (Tata 407)",
+  vehicleReg: "HR-26 AB 4521",
+  capacity: "2.5 MT",
+  baseLocation: "Rohtak - Mathura Corridor",
+  ownership: "Owner-Driver",
+  verified: true
+};
+
+/* Driver Mock State */
+let driverJobFeed = [
+  { id: 'JOB-501', route: 'Mathura Farm → Delhi Wholesale Hub', distance: '180 km', cargo: 'Tomato 500 Kg', pickupTime: 'Today 6:00 AM', payout: '₹3,000', stops: 1 },
+  { id: 'JOB-502', route: 'Rohtak Cluster → Sector 18 Warehouse', distance: '32 km', cargo: 'Onion 900 Kg (Pooled - 3 Farms)', pickupTime: 'Tomorrow 5:30 AM', payout: '₹3,200', stops: 3 },
+  { id: 'JOB-503', route: 'Govardhan FPO → Grand Vista Hotel', distance: '24 km', cargo: 'Mixed Veg 250 Kg', pickupTime: 'Today 1:00 PM', payout: '₹650', stops: 1 }
+];
+
+let driverActiveTrip = {
+  id: 'JOB-498',
+  route: 'Mathura Farm → Delhi Wholesale Hub',
+  cargo: 'Tomato 500 Kg (Grade A)',
+  shipper: 'Kisan Mitra',
+  receiver: 'ABC Restaurant',
+  stage: 2,
+  payout: '₹3,000'
+};
+
+let driverEarnings = [
+  { id: '#TRP-991', route: 'Mathura → Delhi', date: '2 Sept', amount: '₹3,000', status: 'Paid' },
+  { id: '#TRP-988', route: 'Rohtak → Sector 18', date: '31 Aug', amount: '₹3,200', status: 'Paid' },
+  { id: '#TRP-980', route: 'Govardhan → Grand Vista', date: '29 Aug', amount: '₹650', status: 'Pending' }
+];
+
+/* Farmer Mock State */
+let farmerInventory = [
+  { id: 'INV-1', crop: 'Tomato', total: 1000, sold: 500, available: 500, grade: 'A', price: 28 },
+  { id: 'INV-2', crop: 'Potato', total: 500, sold: 200, available: 300, grade: 'B', price: 22 },
+  { id: 'INV-3', crop: 'Wheat', total: 1200, sold: 400, available: 800, grade: 'A', price: 26 }
+];
+
+let buyerMatches = [
+  { id: 'BM1', name: '🍽 Restaurant A', distance: '12 km', req: '100 Kg', price: '₹29/kg', rating: '4.8 ★', best: true },
+  { id: 'BM2', name: '🏪 Retailer B', distance: '8 km', req: '200 Kg', price: '₹27/kg', rating: '4.6 ★', best: false },
+  { id: 'BM3', name: '👨‍👩‍👧 Consumer Group', distance: '15 km', req: '150 Kg', price: '₹30/kg', rating: '4.9 ★', best: false }
+];
+
+let activeNegotiation = {
+  buyerName: "ABC Restaurant",
+  crop: "Tomato (Grade A)",
+  offeredPrice: 28,
+  farmerCounter: 30,
+  qty: "100 Kg",
+  status: "Pending Farmer Response"
+};
+
+let ordersList = [
+  { id: '#1023', crop: 'Tomato', qty: '100 Kg', buyer: 'ABC Restaurant', total: '₹2,900', status: 'Confirmed' },
+  { id: '#1024', crop: 'Potato', qty: '200 Kg', buyer: 'Consumer Group', total: '₹5,600', status: 'In Transit' },
+  { id: '#1020', crop: 'Wheat', qty: '400 Kg', buyer: 'Bulk Buyer X', total: '₹10,400', status: 'Delivered' }
+];
+
+const i18n = {
+  en: {
+    welcome: "Good Morning, Kisan Mitra 👨‍🌾",
+    verifiedBadge: "Verified Farmer ✅",
+    traderBadge: "Verified Trader/Wholesaler 🏢",
+    consumerBadge: "Bulk Kitchen / Institutional Buyer 🍽️",
+    driverBadge: "Verified Transport Partner 🚚",
+    dashSub: "Direct sales dashboard with zero intermediary losses & live pooling."
+  },
+  hi: {
+    welcome: "सुप्रभात, किसान मित्र 👨‍🌾",
+    verifiedBadge: "सत्यापित किसान ✅",
+    traderBadge: "सत्यापित व्यापारी/होलसेलर 🏢",
+    consumerBadge: "होटल / रेस्टोरेंट / बल्क खरीदार 🍽️",
+    driverBadge: "सत्यापित ट्रांसपोर्ट पार्टनर 🚚",
+    dashSub: "बिचौलिया-मुक्त सीधी बिक्री, लॉजिस्टिक्स पूलिंग एवं मूल्य विश्लेषण।"
+  }
+};
+
+function toggleAuthFields() {
+  const role = document.getElementById('roleSelect').value;
+  const isSignup = mode === 'signup';
+  document.getElementById('signupFields').classList.toggle('hidden', !isSignup || role !== 'farmer');
+  document.getElementById('traderSignupFields').classList.toggle('hidden', !isSignup || role !== 'wholesaler');
+  document.getElementById('consumerSignupFields').classList.toggle('hidden', !isSignup || role !== 'consumer');
+  document.getElementById('driverSignupFields').classList.toggle('hidden', !isSignup || role !== 'driver');
+}
+
+function logout() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  document.getElementById('password').value = '';
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('auth').classList.remove('hidden');
+  showToast(currentLang === 'hi' ? 'सफलतापूर्वक लॉग आउट हो गए।' : 'Logged out successfully.');
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('langAuthEn')?.classList.toggle('active', lang === 'en');
+  document.getElementById('langAuthHi')?.classList.toggle('active', lang === 'hi');
+  document.getElementById('langAppEn')?.classList.toggle('active', lang === 'en');
+  document.getElementById('langAppHi')?.classList.toggle('active', lang === 'hi');
+  document.getElementById('voiceListenText').textContent = lang === 'en' ? 'Listen' : 'आवाज़ में सुनें';
+  
+  if (!document.getElementById('app').classList.contains('hidden')) {
+    const name = currentRole === 'wholesaler' ? traderProfile.name : (currentRole === 'consumer' ? consumerProfile.name : (currentRole === 'driver' ? driverProfile.name : farmerProfile.name));
+    buildApp(currentRole, name);
+  }
+  showToast(lang === 'en' ? 'Language switched to English' : 'भाषा बदलकर हिंदी कर दी गई');
+}
+
+function authMode(m) {
+  mode = m;
+  document.getElementById('loginTab').classList.toggle('active', m === 'login');
+  document.getElementById('signupTab').classList.toggle('active', m === 'signup');
+  toggleAuthFields();
+  document.getElementById('authTitle').textContent = m === 'login' ? 'Account Login' : 'Account Registration';
+  document.getElementById('authBtn').textContent = m === 'login' ? 'Sign In' : 'Register Account';
+}
+
+async function validateAndEnterApp() {
+  const name = document.getElementById('userNameInput').value.trim();
+  const contact = document.getElementById('contact').value.trim();
+  const password = document.getElementById('password').value;
+  const role = document.getElementById('roleSelect').value;
+
+  if (!name) {
+    document.getElementById('nameError').style.display = 'block';
+    return;
+  } else {
+    document.getElementById('nameError').style.display = 'none';
+  }
+
+  if (!contact || password.length < 6) {
+    showToast("Enter a valid mobile/email and password (min 6 chars).");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, contact, password, role })
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      currentUserId = data.user_id;
+      currentRole = data.role;
+      localStorage.setItem("authToken", data.token);
+
+      document.getElementById('auth').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      buildApp(currentRole, data.name);
+      showToast("✓ Connected to Backend Database!");
+    } else {
+      showToast("Auth failed: " + (data.detail || "Invalid login"));
+    }
+  } catch (err) {
+    showToast("Backend offline. Run 'python main.py' in the backend folder.");
+  }
+}
+
+/* ================= FARMER SUITE ================= */
+function getFarmerPages() {
+  const isHi = currentLang === 'hi';
+  return {
+    nav: [
+      ['dash', '🏠', isHi ? 'डैशबोर्ड' : 'Dashboard'],
+      ['addcrop', '🌱', isHi ? 'फसल बेचें (Sell Crop)' : 'Sell My Crop'],
+      ['expenses', '₹', isHi ? 'लागत व शुद्ध मुनाफा' : 'Expenses & Net Profit'],
+      ['quality', '📸', isHi ? 'क्वालिटी जांच (AI Grade)' : 'Quality Inspection'],
+      ['pricing', '💰', isHi ? 'AI मूल्य सुझाव' : 'Price Recommendation'],
+      ['intermediary', '📊', isHi ? 'बिचौलिया प्रभाव' : 'Intermediary Analyzer'],
+      ['buyers', '🤝', isHi ? 'स्मार्ट बायर्स' : 'Buyer Matching'],
+      ['negotiate', '💬', isHi ? 'मोलभाव (Negotiate)' : 'Requests & Offers'],
+      ['transport', '🚚', isHi ? 'स्मार्ट ट्रांसपोर्ट' : 'Smart Logistics'],
+      ['pooling', '🚛', isHi ? 'लॉजिस्टिक्स पूलिंग' : 'Logistics Pooling ⭐'],
+      ['orders', '📦', isHi ? 'ऑर्डर मैनेजमेंट' : 'Order Management'],
+      ['tracking', '📍', isHi ? 'लाइव ट्रैकिंग' : 'Live Tracking'],
+      ['payment', '💳', isHi ? 'भुगतान व रसीद' : 'Payment Slip'],
+      ['analytics', '📈', isHi ? 'आय व लाभ ग्राफ' : 'Income Analytics'],
+      ['inventory', '📦', isHi ? 'इन्वेंट्री मैनेजमेंट' : 'Inventory Stock'],
+      ['support', '🆘', isHi ? 'हेल्प व विवाद' : 'Help & Disputes']
+    ],
+    pages: {
+      dash: `
+        <div class="hero">
+          <h2>${isHi ? 'सुप्रभात, ' + farmerProfile.name + ' 👨‍🌾' : 'Good Morning, ' + farmerProfile.name + ' 👨‍🌾'}</h2>
+          <p class="muted">${isHi ? 'आज का मंडी भाव, एक्टिव बायर्स और आपकी अनुमानित कमाई:' : 'Today\'s suggested prices, active buyers and expected farm revenue:'}</p>
+        </div>
+
+        <div class="grid g4">
+          <div class="card">
+            <div class="muted">🍅 Tomato Available</div>
+            <div class="metric green">500 Kg</div>
+            <div class="muted">Suggested: ₹28/kg</div>
+          </div>
+          <div class="card">
+            <div class="muted">Potential Buyers</div>
+            <div class="metric blue">14 Active</div>
+            <div class="muted">Nearby within 15 km</div>
+          </div>
+          <div class="card">
+            <div class="muted">Pending Orders</div>
+            <div class="metric orange">3 Orders</div>
+            <div class="muted">1 Out for Pickup</div>
+          </div>
+          <div class="card">
+            <div class="muted">Expected Income</div>
+            <div class="metric green">₹14,000</div>
+            <div class="muted">+₹3,500 vs traditional mandi</div>
+          </div>
+        </div>
+
+        <div class="grid g2" style="margin-top:16px">
+          <div class="card">
+            <div class="row space">
+              <h3>🌾 Active Farm Crops</h3>
+              <button class="btn small" onclick="showPage('addcrop')">+ Add New Crop</button>
+            </div>
+            <table>
+              <thead>
+                <tr><th>Crop</th><th>Available</th><th>Market Benchmark</th><th>AI Recommended</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><b>🍅 Tomato</b></td><td>500 Kg</td><td>₹24/kg</td><td><b class="green">₹28/kg</b></td><td><span class="badge">Active</span></td></tr>
+                <tr><td><b>🥔 Potato</b></td><td>300 Kg</td><td>₹19/kg</td><td><b class="green">₹22/kg</b></td><td><span class="badge">Active</span></td></tr>
+                <tr><td><b>🌾 Wheat</b></td><td>800 Kg</td><td>₹23/kg</td><td><b class="green">₹26/kg</b></td><td><span class="badge">Active</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>⚡ Quick Actions</h3>
+            <p class="muted">Perform essential daily operations in one tap:</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn" onclick="showPage('addcrop')">🌱 Post New Crop for Sale</button>
+              <button class="btn secondary" onclick="showPage('expenses')">₹ Calculate Real Crop Profit & Costs</button>
+              <button class="btn secondary" onclick="showPage('quality')">📸 Upload Photos for AI Grading</button>
+              <button class="btn secondary" onclick="showPage('pooling')">🚛 Share Vehicle with Nearby Farmers</button>
+              <button class="btn secondary" onclick="showPage('negotiate')">💬 View Counter-Offer from ABC Restaurant</button>
+            </div>
+          </div>
+        </div>
+      `,
+
+      /* EXPENSES & NET PROFIT MODULE */
+      expenses: `
+        <div class="hero">
+          <h2>${isHi ? '₹ फसल लागत एवं शुद्ध मुनाफा गणक' : '₹ Crop Expenses & Net Profit Calculator'}</h2>
+          <p class="muted">${isHi ? 'बीज, खाद, मजदूरी और भाड़े के बाद अपनी वास्तविक शुद्ध कमाई जानें।' : 'Understand your true take-home earnings after deducting every production and transport cost.'}</p>
+        </div>
+
+        <div class="grid g2">
+          <div class="card">
+            <h3>${isHi ? 'लागत विवरण दर्ज करें' : 'Enter Crop Input Costs'}</h3>
+            <p class="muted">${isHi ? 'अपने खेत की लागत और अनुमानित बिक्री मूल्य भरें:' : 'Enter your actual production expenses and estimated sale revenue:'}</p>
+            
+            <div class="grid g-equal" style="margin-top:14px">
+              <div class="field">
+                <label>${isHi ? 'बीज / पौध (SEEDS)' : 'Seeds / Saplings (₹)'}</label>
+                <input id="exp_seeds" type="number" value="12000" oninput="calcProfit()">
+              </div>
+              <div class="field">
+                <label>${isHi ? 'खाद व कीटनाशक (FERTILIZER/PEST)' : 'Fertilizer & Pesticides (₹)'}</label>
+                <input id="exp_fert" type="number" value="18000" oninput="calcProfit()">
+              </div>
+            </div>
+
+            <div class="grid g-equal">
+              <div class="field">
+                <label>${isHi ? 'मजदूरी / कटाई (LABOUR/HARVEST)' : 'Labour / Harvester (₹)'}</label>
+                <input id="exp_labour" type="number" value="15000" oninput="calcProfit()">
+              </div>
+              <div class="field">
+                <label>${isHi ? 'ट्रैक्टर / परिवहन (TRANSPORT/FUEL)' : 'Transport & Fuel (₹)'}</label>
+                <input id="exp_trans" type="number" value="6000" oninput="calcProfit()">
+              </div>
+            </div>
+
+            <div class="grid g-equal">
+              <div class="field">
+                <label>${isHi ? 'भंडारण व अन्य खर्च (STORAGE/MISC)' : 'Storage / Crates / Other (₹)'}</label>
+                <input id="exp_misc" type="number" value="4000" oninput="calcProfit()">
+              </div>
+              <div class="field">
+                <label>${isHi ? 'अनुमानित कुल बिक्री (TOTAL REVENUE)' : 'Expected Crop Revenue (₹)'}</label>
+                <input id="exp_rev" type="number" value="115000" oninput="calcProfit()">
+              </div>
+            </div>
+
+            <button class="btn" style="margin-top:10px" onclick="calcProfit()">
+              🔄 ${isHi ? 'शुद्ध मुनाफे की गणना करें' : 'Recalculate Net Profit'}
+            </button>
+          </div>
+
+          <div class="card">
+            <h3>${isHi ? 'लाभ का सारांश (Profit Snapshot)' : 'Profit Snapshot'}</h3>
+            <div class="muted">${isHi ? 'कटौती के बाद शुद्ध कमाई:' : 'Estimated Net Profit:'}</div>
+            <div class="metric green" id="calc_profit_val">₹60,000</div>
+            
+            <div style="margin-top:20px">
+              <div class="row space">
+                <span class="muted">${isHi ? 'कुल उत्पादन लागत (Total Expenses)' : 'Total Production Cost'}</span>
+                <b id="calc_cost_val" class="orange">₹55,000</b>
+              </div>
+              <div class="bar" style="margin-top:8px">
+                <div id="bar_cost" class="fill forange" style="width:47.8%"></div>
+              </div>
+
+              <div class="row space" style="margin-top:16px">
+                <span class="muted">${isHi ? 'शुद्ध मुनाफा मार्जिन (Net Margin %)' : 'Net Profit Margin (%)'}</span>
+                <b id="calc_margin_val" class="green">52.2%</b>
+              </div>
+              <div class="bar" style="margin-top:8px">
+                <div id="bar_margin" class="fill fgreen" style="width:52.2%"></div>
+              </div>
+            </div>
+
+            <div class="alert ok" style="margin-top:20px" id="calc_tip_box">
+              💡 <b>${isHi ? 'सलाह:' : 'Optimization Tip:'}</b> ${isHi ? 'FasalSetu शेयर्ड ट्रांसपोर्ट पूलिंग चुनकर आप ₹6,000 ट्रांसपोर्ट लागत में से ₹3,600 की बचत कर सकते हैं।' : 'By selecting FasalSetu shared logistics pooling, your transport cost will drop from ₹6,000 to ₹2,400, boosting net margin by ~3%.'}
+            </div>
+          </div>
+        </div>
+      `,
+
+      addcrop: `
+        <div class="hero">
+          <h2>🌱 Sell My Crop (फसल लिस्ट करें)</h2>
+          <p class="muted">Provide complete batch details or use voice input to attract direct buyers.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <div class="row space">
+              <h3>Crop Details Form</h3>
+              <button class="mic-btn" onclick="listenToField('cropNameField')">🎤 Voice Fill</button>
+            </div>
+            
+            <div class="field">
+              <label>Crop Name *</label>
+              <input id="cropNameField" placeholder="e.g. Tomato (टमाटर)">
+            </div>
+
+            <div class="grid g-equal">
+              <div class="field">
+                <label>Variety *</label>
+                <input id="cropVariety" placeholder="e.g. Desi / Hybrid Vaishali">
+              </div>
+              <div class="field">
+                <label>Total Quantity (Kg) *</label>
+                <input id="cropQtyField" placeholder="e.g. 500">
+              </div>
+            </div>
+
+            <div class="grid g-equal">
+              <div class="field">
+                <label>Harvest Date *</label>
+                <input type="date" id="cropHarvestDate" value="2026-09-05">
+              </div>
+              <div class="field">
+                <label>Expected Price (₹/Kg) *</label>
+                <input id="cropPriceField" placeholder="e.g. 28">
+              </div>
+            </div>
+
+            <div class="grid g-equal">
+              <div class="field">
+                <label>Farm Location *</label>
+                <input id="cropLocField" value="Central Region, UP">
+              </div>
+              <div class="field">
+                <label>Grade *</label>
+                <select id="cropGradeField">
+                  <option value="A">Grade A (Premium)</option>
+                  <option value="B">Grade B (Standard)</option>
+                  <option value="C">Grade C (Processing)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid g-equal">
+              <div class="field">
+                <label>Packaging Type *</label>
+                <select id="cropPackaging">
+                  <option>Plastic Crates (25 Kg)</option>
+                  <option>Jute Gunny Bags (50 Kg)</option>
+                  <option>Corrugated Boxes</option>
+                  <option>Loose Bulk</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Minimum Order Quantity (MOQ) *</label>
+                <input id="cropMoq" placeholder="e.g. 50 Kg" value="50 Kg">
+              </div>
+            </div>
+
+            <button class="primary-btn" onclick="postCropSubmission()">POST CROP TO MARKETPLACE</button>
+          </div>
+
+          <div class="card">
+            <h3>Crop Summary Preview</h3>
+            <div class="status-box">
+              <p><b>Crop:</b> Tomato (Hybrid Vaishali)</p>
+              <p><b>Quantity:</b> 500 Kg &bull; <b>MOQ:</b> 50 Kg</p>
+              <p><b>Harvest Date:</b> 5 Sept &bull; <b>Location:</b> Central Region, UP</p>
+              <p><b>Expected Price:</b> <span class="green">₹28/Kg</span></p>
+              <p><b>Packaging:</b> Plastic Crates (25 Kg)</p>
+            </div>
+            <div class="alert ok" style="margin-top:12px">
+              💡 <b>AI Note:</b> Tomatoes listed with Crates packaging reduce transit damage by 18% and attract top restaurant buyers.
+            </div>
+          </div>
+        </div>
+      `,
+
+      quality: `
+        <div class="hero">
+          <h2>📸 Crop Quality Verification (AI & Inspector)</h2>
+          <p class="muted">Two-tier validation: Preliminary AI image diagnostics backed by FPO Quality Inspector verification.</p>
+        </div>
+        <div class="card">
+          <h3>Upload Crop Photos for Grading</h3>
+          <div class="photo-grid">
+            <div class="photo-slot" onclick="simulateUpload(1)"><span style="font-size:26px">📷</span><br><b>[ Front View ]</b><br><small id="p1">Click to Upload</small></div>
+            <div class="photo-slot" onclick="simulateUpload(2)"><span style="font-size:26px">📷</span><br><b>[ Side View ]</b><br><small id="p2">Click to Upload</small></div>
+            <div class="photo-slot" onclick="simulateUpload(3)"><span style="font-size:26px">📷</span><br><b>[ Close-up View ]</b><br><small id="p3">Click to Upload</small></div>
+          </div>
+          <button class="btn" onclick="runAiQualityAnalysis()">Run AI Quality Diagnostic</button>
+        </div>
+
+        <div class="grid g2" style="margin-top:16px" id="qualityResults">
+          <div class="card">
+            <div class="row space">
+              <h3>AI Preliminary Diagnostic</h3>
+              <span class="badge">Confidence 94%</span>
+            </div>
+            <div class="score-box" style="margin:14px 0">
+              <div class="circle-score">91</div>
+              <div>
+                <b>Overall Quality Score: 91/100</b>
+                <div class="muted">Assigned Grade: <b class="green">Grade A</b></div>
+                <div class="muted">Freshness Index: <b class="green">High (&lt;12 hrs harvest)</b></div>
+              </div>
+            </div>
+            <div class="row space"><span class="muted">Visible Surface Damage</span><b>Low (2.1%)</b></div>
+            <div class="row space" style="margin-top:6px"><span class="muted">Color Uniformity</span><b>94% Deep Red</b></div>
+            <div class="row space" style="margin-top:6px"><span class="muted">Average Diameter</span><b>62 mm (Uniform)</b></div>
+          </div>
+
+          <div class="card">
+            <h3>Inspector Verification & Final Grade</h3>
+            <div class="alert ok">
+              <b>Verified Grade: Grade A (Certified)</b><br>
+              Audited by Regional FPO Field Inspector: <i>Suresh Sharma (ID: FPO-774)</i>
+            </div>
+            <p class="muted">Suggested Market Realization: <b>₹27–30/kg</b></p>
+            <button class="btn small" onclick="showToast('Quality Certificate Downloaded!')">📄 Download Inspection Certificate</button>
+          </div>
+        </div>
+      `,
+
+      pricing: `
+        <div class="hero">
+          <h2>💰 AI Price Recommendation & Market Intelligence</h2>
+          <p class="muted">Transparent price guidance calculated using regional mandi inflows, demand velocity, and direct buyer requirements.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Tomato Pricing Analysis</h3>
+            <div class="row space" style="margin:12px 0"><span class="muted">Local Mandi Benchmark</span><b>₹24/kg</b></div>
+            <div class="row space" style="margin:12px 0"><span class="muted">Direct Nearby Buyers</span><b>₹27/kg</b></div>
+            <div class="row space" style="margin:12px 0"><span class="muted">Demand Velocity</span><b style="color:red">HIGH 🔥</b></div>
+            <hr style="border:0;border-top:1px solid var(--border)">
+            <div class="status-box">
+              <h2 class="green" style="margin:0">AI Suggested Price: ₹27–29/kg</h2>
+              <small class="muted">Optimal point for fastest liquidity and maximum net return.</small>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <button class="btn" onclick="acceptSuggestedPrice(28)">✓ Accept Suggested (₹28/kg)</button>
+              <button class="btn secondary" onclick="setCustomPricePrompt()">Set My Own Price</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>📊 Market Price Comparison</h3>
+            <table>
+              <thead><tr><th>Channel</th><th>Price</th><th>Net to Farmer</th></tr></thead>
+              <tbody>
+                <tr><td>Local APMC Mandi</td><td>₹23/kg</td><td>₹19.50/kg (after 15% commission)</td></tr>
+                <tr><td>Wholesale Trader</td><td>₹26/kg</td><td>₹22.80/kg</td></tr>
+                <tr style="background:#edf8f1"><td><b>FasalSetu Direct</b></td><td><b class="green">₹28.50/kg</b></td><td><b class="green">₹26.20/kg</b></td></tr>
+                <tr><td>Consumer Retail Shelf</td><td>₹38.00/kg</td><td>N/A</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `,
+
+      intermediary: `
+        <div class="hero">
+          <h2>📊 Intermediary Impact Analyzer ⭐</h2>
+          <p class="muted">Compare traditional supply chain leakage with FasalSetu direct distribution.</p>
+        </div>
+        <div class="card">
+          <div class="grid g-equal">
+            <div>
+              <h3 style="color:#a83232">❌ Traditional Multi-Tier Mandi Route</h3>
+              <div class="chain">
+                <div class="node"><small>Farmer</small><b>₹20</b></div><span class="arrow">→</span>
+                <div class="node"><small>Trader</small><b>₹24</b></div><span class="arrow">→</span>
+                <div class="node"><small>Wholesaler</small><b>₹29</b></div><span class="arrow">→</span>
+                <div class="node"><small>Retailer</small><b>₹35</b></div><span class="arrow">→</span>
+                <div class="node"><small>Consumer</small><b>₹40</b></div>
+              </div>
+              <p class="muted" style="margin-top:12px">Middlemen take ₹20/kg (50% of the retail price).</p>
+            </div>
+
+            <div>
+              <h3 style="color:var(--green)">✅ FasalSetu Direct Platform</h3>
+              <div class="chain">
+                <div class="node" style="background:#edf8f1"><small>Farmer</small><b class="green">₹27</b></div><span class="arrow">→</span>
+                <div class="node"><small>Transport</small><b>₹3</b></div><span class="arrow">→</span>
+                <div class="node" style="background:#edf8f1"><small>Consumer</small><b class="green">₹30</b></div>
+              </div>
+              <p class="muted" style="margin-top:12px">Fair margins: Farmer gains more, consumer pays less.</p>
+            </div>
+          </div>
+
+          <div class="grid g-equal" style="margin-top:20px">
+            <div class="alert ok">
+              <b>Farmer Realization Gain: +₹7/kg (+35%)</b><br>
+              On a 500 Kg batch of tomatoes, you earn approximately <b>₹3,500 extra</b>.
+            </div>
+            <div class="alert ok">
+              <b>Consumer Savings: -₹10/kg (-25%)</b><br>
+              Consumers receive fresher harvest while saving ~₹10 per kilogram.
+            </div>
+          </div>
+        </div>
+      `,
+
+      buyers: `
+        <div class="buyers-card">
+          <div class="buyers-header">
+            <h2>Available Buyers Near You</h2>
+            <div class="row" style="gap:8px">
+              <span class="muted" style="font-size:12.5px">Sort by</span>
+              <select class="sort-select" id="buyerSortSelect" onchange="sortBuyersList(this.value)">
+                <option value="highest_price">Highest Price</option>
+                <option value="lowest_distance">Nearest Distance</option>
+                <option value="direct_first">Direct Buyer First</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="buyers-table">
+              <thead>
+                <tr>
+                  <th>Buyer / Middleman</th>
+                  <th>Type</th>
+                  <th>Distance</th>
+                  <th>Offered Price<br><small style="font-weight:400">(₹ / Quintal)</small></th>
+                  <th>Total Amount<br><small style="font-weight:400">(for 50 Quintal)</small></th>
+                  <th style="text-align:right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="buyersTableBody">
+                <!-- Dynamically rendered rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert ok" style="margin-top:18px">
+            💡 <b>FasalSetu Direct Linkage:</b> <b>Haryana Foods Pvt. Ltd.</b> pays <b>₹300/quintal more</b> than local mandi brokers. You gain <b>₹15,000 extra profit</b> on a 50 quintal load by bypassing middlemen commission.
+          </div>
+        </div>
+      `,
+
+      negotiate: `
+        <div class="hero">
+          <h2>💬 Buyer Request & Live Counter-Offer</h2>
+          <p class="muted">Direct bilateral negotiation without broker cuts or unrecorded verbal promises.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Active Negotiation</h3>
+            <div class="status-box">
+              <p><b>Buyer:</b> ABC Restaurant &bull; <b>Requirement:</b> 100 Kg Tomato (Grade A)</p>
+              <p><b>Initial Buyer Bid:</b> ₹28/kg</p>
+              <p><b>Your Asking Price:</b> ₹30/kg</p>
+              <p><b>Buyer Latest Counter:</b> <b class="green">₹29/kg</b></p>
+            </div>
+            
+            <div style="margin-top:16px">
+              <label><b>Respond to Buyer Counter:</b></label>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="btn" onclick="resolveNegotiation('accept')">✓ Accept Offer at ₹29/kg</button>
+                <button class="btn secondary" onclick="resolveNegotiation('counter')">Send Counter-Bid</button>
+                <button class="btn danger" onclick="resolveNegotiation('reject')">Decline</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Negotiation Ledger</h3>
+            <div style="font-size:12.5px;color:var(--muted);line-height:1.8">
+              <div>10:15 AM &bull; <b>ABC Restaurant:</b> Placed request for 100 Kg @ ₹28/kg</div>
+              <div>10:22 AM &bull; <b>You:</b> Counter-offered @ ₹30/kg</div>
+              <div>10:30 AM &bull; <b>ABC Restaurant:</b> Revised offer @ ₹29/kg</div>
+              <div class="green" style="font-weight:700;margin-top:6px">● System Recommendation: Accept ₹29/kg (within 98% of AI optimum)</div>
+            </div>
+          </div>
+        </div>
+      `,
+
+      transport: `
+        <div class="hero">
+          <h2>🚚 Smart Transportation & Fleet Allocation</h2>
+          <p class="muted">Pre-integrated verified drivers. No need to look for transport manually in village hubs.</p>
+        </div>
+        <div class="card" style="margin-bottom:14px;background:#f9fcf9">
+          <b>Active Route:</b> Mathura Farm → Delhi Wholesale Hub (180 km) &bull; <b>Cargo:</b> 500 Kg Tomato
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Available Fleet Partners</h3>
+            <div class="vehicle selected">
+              <div class="vehicle-header">
+                <div><b>🚚 Raj Transport (Tata 407)</b> &bull; 4.7 ⭐</div>
+                <span class="badge assigned">Best Rate</span>
+              </div>
+              <p class="muted">Capacity: 1,000 Kg | Distance: 180 km</p>
+              <div class="cost">₹3,000 estimated</div>
+              <button class="btn small" onclick="showToast('Raj Transport Allocated!')">Assign This Vehicle</button>
+            </div>
+
+            <div class="vehicle">
+              <div class="vehicle-header">
+                <div><b>🚚 Singh Logistics (Bolero Maxi)</b> &bull; 4.5 ⭐</div>
+                <span class="badge">Available</span>
+              </div>
+              <p class="muted">Capacity: 700 Kg | Distance: 180 km</p>
+              <div class="cost">₹3,200 estimated</div>
+              <button class="btn small secondary" onclick="showToast('Singh Logistics Allocated!')">Assign This Vehicle</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Route Navigation Preview</h3>
+            <div class="map">
+              <div class="road"></div>
+              <div class="pin farm">🌾</div>
+              <div class="pin hub">🏭</div>
+              <div class="pin buyer">📍</div>
+            </div>
+            <p class="muted" style="margin-top:10px">Mathura → Palwal → Delhi Terminal &bull; <b>ETA:</b> 3h 20m</p>
+          </div>
+        </div>
+      `,
+
+      pooling: `
+        <div class="hero">
+          <h2>🚛 Logistics Pooling Hub ⭐</h2>
+          <p class="muted">Combine partial truck loads with neighboring farmers going along the same corridor.</p>
+        </div>
+        <div class="card">
+          <div class="alert ok">
+            <b>🎉 Pooling Match Found along Mathura → Delhi Corridor!</b><br>
+            You can share one 1,000 Kg vehicle with 2 nearby farmers instead of dispatching 3 separate pickups.
+          </div>
+
+          <table style="margin-top:14px">
+            <thead>
+              <tr><th>Farmer</th><th>Village</th><th>Crop</th><th>Quantity</th><th>Solo Freight</th><th>Pooled Freight</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>You (Kisan Mitra)</b></td><td>Mathura</td><td>Tomato</td><td>300 Kg</td><td>₹2,800</td><td><b class="green">₹1,100</b></td></tr>
+              <tr><td><b>Farmer B (Mahesh)</b></td><td>Govardhan (4 km)</td><td>Potato</td><td>400 Kg</td><td>₹2,900</td><td><b class="green">₹1,300</b></td></tr>
+              <tr><td><b>Farmer C (Hari)</b></td><td>Chaumuha (6 km)</td><td>Onion</td><td>200 Kg</td><td>₹2,600</td><td><b class="green">₹800</b></td></tr>
+              <tr style="background:#f4fbf6;font-weight:700">
+                <td><b>Combined Fleet</b></td>
+                <td>Shared Route</td>
+                <td>Consolidated</td>
+                <td>900 Kg / 1,000 Kg</td>
+                <td>₹8,300 (Total)</td>
+                <td><b class="green">₹3,200 (Total Pool)</b></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="row space" style="margin-top:16px">
+            <span class="green" style="font-weight:700">Your Net Logistics Savings: ₹1,700 (60% saved)</span>
+            <button class="btn" onclick="showToast('Consolidated Pickup Booked for Tomorrow 6:00 AM!')">Confirm Pooled Booking</button>
+          </div>
+        </div>
+      `,
+
+      orders: `
+        <div class="hero">
+          <h2>📦 Order Management & Lifecycle</h2>
+          <p class="muted">Track end-to-end milestone stages: Requested → Accepted → Packed → Picked Up → In Transit → Delivered → Paid</p>
+        </div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr><th>Order ID</th><th>Produce</th><th>Buyer</th><th>Amount</th><th>Stage</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>#1023</b></td><td>Tomato – 100 Kg</td><td>ABC Restaurant</td><td>₹2,900</td>
+                <td><span class="badge">Packed & Ready</span></td>
+                <td><button class="btn small" onclick="advanceOrderStatus('#1023')">Mark Picked Up</button></td>
+              </tr>
+              <tr>
+                <td><b>#1024</b></td><td>Potato – 200 Kg</td><td>Consumer Group</td><td>₹5,600</td>
+                <td><span class="badge assigned">In Transit</span></td>
+                <td><button class="btn small secondary" onclick="showPage('tracking')">Track GPS</button></td>
+              </tr>
+              <tr>
+                <td><b>#1020</b></td><td>Wheat – 400 Kg</td><td>Bulk Buyer X</td><td>₹10,400</td>
+                <td><span class="badge">Payment Released</span></td>
+                <td><button class="btn small secondary" onclick="showPage('payment')">View Slip</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+
+      tracking: `
+        <div class="hero">
+          <h2>📍 Live Delivery Tracking Telemetry</h2>
+          <p class="muted">Live GPS fleet location for both farmers and buyers.</p>
+        </div>
+        <div class="card">
+          <div class="track-line" style="margin:20px 0">
+            <div class="track-item"><div class="dot done">✓</div><b>Pickup</b><br><small>Mathura 6:00 AM</small></div>
+            <div class="track-item"><div class="dot done">✓</div><b>Hub Sort</b><br><small>Palwal 7:30 AM</small></div>
+            <div class="track-item"><div class="dot current">3</div><b>In Transit</b><br><small>Faridabad Bypass</small></div>
+            <div class="track-item"><div class="dot">4</div><b>Destination</b><br><small>Delhi ETA 9:40 AM</small></div>
+          </div>
+
+          <div class="status-box">
+            <p><b>Vehicle:</b> UP-85 T 4421 (Tata 407) &bull; <b>Driver:</b> Raj Kumar (+91 98765-XXXXX)</p>
+            <p><b>Distance Remaining:</b> 28 km &bull; <b>ETA:</b> 45 minutes</p>
+            <p><b>Produce Temperature:</b> 18°C (Optimal freshness)</p>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <button class="btn" onclick="showToast('GPS Telemetry Synced!')">🔄 Ping GPS Location</button>
+            <button class="btn secondary" onclick="showToast('Driver Contacted via Voice Call!')">📞 Call Driver</button>
+          </div>
+        </div>
+      `,
+
+      payment: `
+        <div class="hero">
+          <h2>💳 Net Settlement & Payment Slip</h2>
+          <p class="muted">Complete transparency: See every rupee received without unrecorded broker cuts.</p>
+        </div>
+        <div class="card" style="max-width:600px;margin:auto">
+          <h3 style="border-bottom:1px solid var(--border);padding-bottom:10px">Settlement Voucher: Order #1024</h3>
+          <div class="row space" style="margin:10px 0"><span>Gross Sale Value (200 Kg @ ₹28)</span><b>₹5,600</b></div>
+          <div class="row space" style="margin:10px 0;color:var(--muted)"><span>Pooled Transportation Fee</span><b>- ₹450</b></div>
+          <div class="row space" style="margin:10px 0;color:var(--muted)"><span>Platform Escrow Fee (1.5%)</span><b>- ₹84</b></div>
+          <hr style="border:0;border-top:2px dashed var(--border);margin:12px 0">
+          <div class="row space" style="font-size:18px"><span class="green"><b>Farmer Receives (In Bank)</b></span><b class="green">₹5,066</b></div>
+          <div class="alert ok" style="margin-top:16px">
+            ✓ Transferred to Bank Account via UPI Escrow.<br>
+            <b>UTR:</b> 628819200412 &bull; <b>Status:</b> Completed
+          </div>
+        </div>
+      `,
+
+      analytics: `
+        <div class="hero">
+          <h2>📈 Farmer Income Analytics & Savings</h2>
+          <p class="muted">Consolidated monthly revenue vs traditional mandi benchmark.</p>
+        </div>
+        <div class="grid g4">
+          <div class="card"><div class="muted">Total Sales</div><div class="metric green">₹72,000</div></div>
+          <div class="card"><div class="muted">Transport Outlay</div><div class="metric orange">₹8,000</div></div>
+          <div class="card"><div class="muted">Platform Fee</div><div class="metric blue">₹1,500</div></div>
+          <div class="card"><div class="muted">Net Earnings</div><div class="metric green">₹62,500</div></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>Traditional Route Comparison</h3>
+          <p class="green" style="font-size:16px;font-weight:700">Estimated additional realization: +₹9,000 this month (16.8% higher net income)</p>
+          <div class="bar" style="height:14px;margin-top:10px"><i style="width:78%;background:var(--green)"></i></div>
+          <small class="muted">78% farmer price share captured compared to 48% through multi-tier commission agents.</small>
+        </div>
+      `,
+
+      inventory: `
+        <div class="hero">
+          <h2>📦 Crop Inventory Management</h2>
+          <p class="muted">Live farm stock records with automatic stock deductions when buyers place confirmed orders.</p>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Crop</th><th>Total Harvested</th><th>Sold Out</th><th>Currently Available</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>🍅 Tomato</b></td><td>1,000 Kg</td><td>500 Kg</td><td><b class="green">500 Kg</b></td><td><span class="badge">In Stock</span></td></tr>
+              <tr><td><b>🥔 Potato</b></td><td>500 Kg</td><td>200 Kg</td><td><b class="green">300 Kg</b></td><td><span class="badge">In Stock</span></td></tr>
+              <tr><td><b>🌾 Wheat</b></td><td>1,200 Kg</td><td>400 Kg</td><td><b class="green">800 Kg</b></td><td><span class="badge">In Stock</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+
+      support: `
+        <div class="hero">
+          <h2>🆘 Help Center & Dispute Resolution</h2>
+          <p class="muted">Immediate assistance for payment, transport, or quality disputes.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Raise a Ticket</h3>
+            <div class="field">
+              <label>Issue Category</label>
+              <select id="issueCat">
+                <option>Payment Settlement Delay</option>
+                <option>Transport Pickup Delay</option>
+                <option>Buyer Grading Dispute</option>
+                <option>Order Cancellation</option>
+                <option>Fraud Report</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Describe the issue</label>
+              <textarea rows="3" placeholder="Explain your concern..."></textarea>
+            </div>
+            <button class="btn" onclick="showToast('Ticket created! An officer will call in 15 minutes.')">Submit Ticket</button>
+          </div>
+
+          <div class="card">
+            <h3>Direct Kisan Helpline</h3>
+            <div class="status-box">
+              <p>📞 <b>Toll Free Call Support:</b> 1800-180-SETU (7 AM - 9 PM)</p>
+              <p>💬 <b>Kisan WhatsApp Desk:</b> +91 98765-FASAL</p>
+              <p>🛡️ <b>Escrow Protection Guarantee:</b> Your funds are secured in bank escrow until delivery confirmation.</p>
+            </div>
+          </div>
+        </div>
+      `
+    }
+  };
+}
+
+/* ================= 28-FEATURE COMPLETE WHOLESALER/TRADER/RETAILER SUITE ================= */
+function getTraderPages() {
+  const isHi = currentLang === 'hi';
+  return {
+    nav: [
+      ['tdash', '🏢', isHi ? 'बिजनेस डैशबोर्ड' : 'Business Dashboard'],
+      ['tbuyfarmer', '🌾', isHi ? 'किसान से खरीदें (Buy)' : 'Buy From Farmer'],
+      ['tbuypartner', '🤝', isHi ? 'पार्टनर से खरीदें (B2B)' : 'Buy From Business Partners'],
+      ['tsell', '🏷️', isHi ? 'इन्वेंट्री बेचें (Sell)' : 'Sell Inventory'],
+      ['tmatch', '🤖', isHi ? 'स्मार्ट सप्लायर मैच' : 'Smart Farmer Matching 🤖'],
+      ['trouteopt', '🛣️', isHi ? 'रूट ऑप्टिमाइज़र' : 'Smart Route Optimizer 🤖'],
+      ['timpact', '⭐', isHi ? 'बिचौलिया प्रभाव' : 'Intermediary Impact Analyzer ⭐'],
+      ['tnego', '💬', isHi ? 'मूल्य मोलभाव' : 'Price Negotiation'],
+      ['tpricing', '💰', isHi ? 'AI मूल्य सुझाव' : 'AI Price Recommendation 🤖'],
+      ['tbulk', '📦', isHi ? 'बल्क खरीद' : 'Bulk Procurement'],
+      ['tinventory', '📊', isHi ? 'इन्वेंट्री मैनेजमेंट' : 'Inventory Management'],
+      ['tdemand', '🔮', isHi ? 'AI डिमांड प्रेडिक्शन' : 'AI Demand Prediction 🤖'],
+      ['talerts', '⚠️', isHi ? 'वेस्टेज/स्टॉक अलर्ट' : 'AI Overstock/Wastage Alert 🤖'],
+      ['tquality', '📸', isHi ? 'क्वालिटी वेरिफिकेशन' : 'Crop Quality Verification'],
+      ['ttransport', '🚚', isHi ? 'ट्रांसपोर्ट बुकिंग' : 'Transport Booking 🚚'],
+      ['tpooling', '🚛', isHi ? 'शेयर्ड लॉजिस्टिक्स' : 'Shared Logistics 🚛'],
+      ['tmap', '🗺️', isHi ? 'AI रूट व मैप' : 'AI Route & Map 🗺️'],
+      ['torders', '📑', isHi ? 'ऑर्डर मैनेजमेंट' : 'Order Management'],
+      ['ttrack', '📍', isHi ? 'लाइव ट्रैकिंग' : 'Live Tracking 📍'],
+      ['tratings', '⭐', isHi ? 'रेटिंग्स व रिव्यू' : 'Ratings & Reviews ⭐'],
+      ['ttrust', '🔐', isHi ? 'वेरिफिकेशन व सुरक्षा' : 'Verification & Fraud Protection 🔐'],
+      ['tinvoice', '📄', isHi ? 'डिजिटल इनवॉइस' : 'Digital Invoice 📄'],
+      ['tpayments', '💳', isHi ? 'भुगतान व बैलेंस' : 'Payments 💳'],
+      ['tanalytics', '📊', isHi ? 'बिजनेस एनालिटिक्स' : 'Business Analytics 📊'],
+      ['tsmartalerts', '🔔', isHi ? 'स्मार्ट अलर्ट्स' : 'AI Smart Alerts 🔔'],
+      ['tsupport', '🆘', isHi ? 'हेल्प व विवाद' : 'Help & Dispute Center 🆘']
+    ],
+    pages: {
+      tdash: `
+        <div class="hero">
+          <h2>${isHi ? 'ट्रेडिंग व होलसेल बिजनेस डैशबोर्ड 🏢' : 'Trading & Wholesale Business Dashboard 🏢'}</h2>
+          <p class="muted">Live overview of procurement, inventory, downstream distribution, and cash flows.</p>
+        </div>
+        <div class="grid g4">
+          <div class="card"><div class="muted">Total Purchases</div><div class="metric green">₹1,42,000</div><div class="muted">4.8 MT Procured</div></div>
+          <div class="card"><div class="muted">Total Sales</div><div class="metric blue">₹1,88,500</div><div class="muted">3.6 MT Liquidated</div></div>
+          <div class="card"><div class="muted">Holding Stock</div><div class="metric orange">12.4 MT</div><div class="muted">Warehouse Unit 1 & 2</div></div>
+          <div class="card"><div class="muted">Gross Margin</div><div class="metric green">+24.7%</div><div class="muted">Zero middleman cuts</div></div>
+        </div>
+        <div class="grid g2" style="margin-top:16px">
+          <div class="card">
+            <div class="row space">
+              <h3>⚡ Quick Trade Operations</h3>
+              <span class="badge">Dual Mode Live</span>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:12px">
+              <button class="btn" onclick="showPage('tbuyfarmer')">🌾 Buy From Farmer</button>
+              <button class="btn secondary" onclick="showPage('tsell')">🏷️ Sell Stock to Retailers</button>
+              <button class="btn secondary" onclick="showPage('tpooling')">🚛 Book Shared Logistics</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>🔔 AI Smart Action Items</h3>
+            <div class="alert ok" style="margin-top:8px"><b>Price Opportunity:</b> Tomato demand rising in Sector 4. Resale margin at +₹4.50/Kg.</div>
+            <div class="alert" style="margin-top:8px"><b>Perishable Notice:</b> 400 Kg Tomato in Bay 3 reaching Day 4. Liquidate promptly.</div>
+          </div>
+        </div>
+      `,
+      tbuyfarmer: `
+        <div class="hero"><h2>🌾 Direct Farm Procurement (Buy From Farmers)</h2><p class="muted">Direct farmer connection with zero commission agent deductions.</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Farmer</th><th>Crop & Variety</th><th>Available Quantity</th><th>Grade</th><th>Farmgate Price</th><th>Distance</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td><b>Kisan Mitra (Mathura)</b></td><td>Tomato (Vaishali)</td><td>500 Kg</td><td><span class="badge grade">Grade A</span></td><td><b class="green">₹28/Kg</b></td><td>18 km</td><td><button class="btn small" onclick="showPage('tnego')">Procure Lot</button></td></tr>
+              <tr><td><b>Harish Farm (Rohtak)</b></td><td>Potato (Kufri)</td><td>2,000 Kg</td><td><span class="badge grade">Grade B</span></td><td><b class="green">₹19/Kg</b></td><td>24 km</td><td><button class="btn small" onclick="showPage('tnego')">Procure Lot</button></td></tr>
+              <tr><td><b>GreenFields FPO</b></td><td>Wheat (Sharbati)</td><td>5,000 Kg</td><td><span class="badge grade">Grade A</span></td><td><b class="green">₹25/Kg</b></td><td>32 km</td><td><button class="btn small" onclick="showPage('tnego')">Procure Lot</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+      tbuypartner: `
+        <div class="hero"><h2>🤝 Inter-Business Sourcing (Buy From Business Partners)</h2><p class="muted">Balance inventories across regional traders, wholesalers, and mill aggregators.</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Partner Entity</th><th>Role</th><th>Available Stock</th><th>Quality Grade</th><th>Wholesale Quote</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr><td><b>Apex Agro Logistics</b></td><td>Regional Wholesaler</td><td>8,000 Kg Onions</td><td>Grade A</td><td>₹24.50/Kg</td><td><button class="btn small secondary" onclick="showToast('B2B Purchase Order Sent!')">Send B2B PO</button></td></tr>
+              <tr><td><b>Karnal Grain Exchange</b></td><td>Aggregator</td><td>15,000 Kg Wheat</td><td>Standard</td><td>₹24.20/Kg</td><td><button class="btn small secondary" onclick="showToast('B2B Purchase Order Sent!')">Send B2B PO</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+      tsell: `
+        <div class="hero"><h2>🏷️ Sell Inventory Downstream (Wholesale & Retailer Outlets)</h2><p class="muted">Publish resale lots to restaurant chains, hotels, and retail groceries.</p></div>
+        <div class="card" style="max-width:700px">
+          <div class="field"><label>Select Commodity from Warehouse Stock</label><select><option>Tomato Grade A (Available: 1,800 Kg)</option><option>Potato Grade B (Available: 3,200 Kg)</option></select></div>
+          <div class="grid g-equal">
+            <div class="field"><label>Offer Volume (Kg)</label><input value="1000"></div>
+            <div class="field"><label>Wholesale Asking Price (₹/Kg)</label><input value="32.50"></div>
+          </div>
+          <div class="field"><label>Target Downstream Channel</label><select><option>Restaurant Chains & Hotels</option><option>Supermarket Consolidators</option><option>Local Retail Greengrocers</option></select></div>
+          <button class="primary-btn" onclick="showToast('✓ Wholesale resale offer live on downstream portal!')">PUBLISH RESALE OFFER</button>
+        </div>
+      `,
+      tmatch: `
+        <div class="hero"><h2>🤖 Smart Farmer Matching Engine</h2><p class="muted">AI multi-criteria scoring balancing price, distance, grade certification, and driver availability.</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Supplier</th><th>Match Score</th><th>Distance</th><th>Offered Rate</th><th>Quality Grade</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr style="background:#f4fbf6"><td><b>Kisan Mitra Cluster</b></td><td><b class="green">96% Best Match</b></td><td>18 km</td><td>₹28/Kg</td><td>Grade A (Certified)</td><td><button class="btn small" onclick="showToast('Direct procurement initiated!')">Lock Supply</button></td></tr>
+              <tr><td><b>Govardhan FPO</b></td><td>88% Match</td><td>26 km</td><td>₹27.50/Kg</td><td>Grade B</td><td><button class="btn small secondary" onclick="showToast('Inquiry dispatched!')">Connect</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+      trouteopt: `
+        <div class="hero"><h2>🛣️ Smart Route Optimizer 🤖</h2><p class="muted">Identifies unnecessary intermediary hops and consolidates direct farm-to-warehouse hauls.</p></div>
+        <div class="card">
+          <div class="alert ok"><b>Optimizer Recommendation:</b> Skip Sub-Mandi Yard 4 &bull; Direct Farm Pickup saves <b>1h 15m</b> and <b>₹1.80/Kg</b> handling costs.</div>
+          <div class="chain" style="margin-top:14px">
+            <div class="node"><small>Farm Origin</small><b>Mathura</b></div><span class="arrow">→</span>
+            <div class="node" style="background:#edf8f1"><small>Optimized Bypass</small><b class="green">Highway Link</b></div><span class="arrow">→</span>
+            <div class="node"><small>Your Warehouse</small><b>Sector 18</b></div>
+          </div>
+        </div>
+      `,
+      timpact: `
+        <div class="hero"><h2>⭐ Intermediary Impact Analyzer</h2><p class="muted">Quantifies layers skipped and value captured between farmer and your business.</p></div>
+        <div class="card">
+          <div class="grid g-equal">
+            <div><h4>Traditional Multi-Layer Sourcing</h4><p class="muted">Farmer (₹20) → Village Broker (₹23) → Mandi Trader (₹27) → Wholesaler (₹32)</p><b style="color:red">3 Layers = High Spoilage & Brokerage</b></div>
+            <div><h4>FasalSetu Direct Procurement</h4><p class="muted">Farmer (₹27) → Direct Transport (₹2) → Your Warehouse (₹29)</p><b class="green">1 Direct Layer = Fresh Cargo & Higher Margin</b></div>
+          </div>
+        </div>
+      `,
+      tnego: `
+        <div class="hero"><h2>💬 Price Negotiation Desk</h2><p class="muted">Direct interactive counter-offer terminal with farmers and business buyers.</p></div>
+        <div class="card">
+          <p><b>Counterparty:</b> Kisan Mitra &bull; <b>Batch:</b> 500 Kg Tomato &bull; <b>Current Bid:</b> ₹28.00/Kg</p>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn" onclick="showToast('Accepted at ₹28.00/Kg!')">✓ Accept Rate</button>
+            <button class="btn secondary" onclick="let p=prompt('Enter Counter Offer (₹/Kg):','27.50');if(p)showToast('Counter sent: ₹'+p)">Send Counter-Offer</button>
+            <button class="btn danger" onclick="showToast('Offer declined.')">Reject</button>
+          </div>
+        </div>
+      `,
+      tpricing: `
+        <div class="hero"><h2>💰 AI Price Recommendation Engine 🤖</h2><p class="muted">Optimal procurement and liquidation pricing curves generated from regional mandi telemetry.</p></div>
+        <div class="card">
+          <div class="row space"><div><h3>Procurement Target: Tomato</h3><span class="green"><b>Optimal Buy: ₹27.00 - ₹28.50/Kg</b></span></div><div><h3>Downstream Resale Target</h3><span class="blue"><b>Optimal Sell: ₹32.00 - ₹34.00/Kg</b></span></div></div>
+        </div>
+      `,
+      tbulk: `
+        <div class="hero"><h2>📦 Bulk Procurement Pool</h2><p class="muted">Consolidate micro-lots from multiple smallholders into a unified commercial haul.</p></div>
+        <div class="card">
+          <p>Combine 3 farmers in Rohtak corridor into a single 4,500 Kg shipment lot.</p>
+          <button class="btn" onclick="showToast('Bulk PO issued to 3 smallholders!')">Execute Bulk Procurement</button>
+        </div>
+      `,
+      tinventory: `
+        <div class="hero"><h2>📊 Warehouse Stock & Inventory Management</h2><p class="muted">Live telemetry tracking holding, damaged, low-stock, and dispatched commodities.</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Commodity</th><th>Total Inward</th><th>Dispatched</th><th>Damaged/Loss</th><th>Available Stock</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Tomato Grade A</b></td><td>4,000 Kg</td><td>2,200 Kg</td><td>35 Kg (0.8%)</td><td><b class="green">1,765 Kg</b></td><td><span class="badge">Healthy</span></td></tr>
+              <tr><td><b>Potato Grade B</b></td><td>6,000 Kg</td><td>2,500 Kg</td><td>20 Kg (0.3%)</td><td><b class="green">3,480 Kg</b></td><td><span class="badge">Healthy</span></td></tr>
+              <tr><td><b>Onion Standard</b></td><td>2,000 Kg</td><td>1,600 Kg</td><td>45 Kg (2.2%)</td><td><b class="orange">355 Kg</b></td><td><span class="badge high">Low Stock Alert</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+      tdemand: `
+        <div class="hero"><h2>🔮 AI Demand & Price Trend Forecast 🤖</h2><p class="muted">Predictive models forecast regional hospitality and retail demand over 7 to 30 days.</p></div>
+        <div class="card"><div class="circle-score">89</div><h3>Tomato Regional Demand: VERY HIGH (Next 14 Days)</h3><p class="muted">Projected retail shelf price expected to increase to ₹35/Kg due to festival demand.</p></div>
+      `,
+      talerts: `
+        <div class="hero"><h2>⚠️ AI Overstock & Wastage Risk Alerts 🤖</h2><p class="muted">Early warning system based on harvest date, shelf-life index, and ambient humidity.</p></div>
+        <div class="card">
+          <div class="alert" style="margin-bottom:10px"><b>⚡ Bay 3 Warning:</b> 400 Kg Tomato reaches 72 hours in cold transit. Recommended price discount by 5% to liquidate within 24h.</div>
+          <button class="btn small" onclick="showToast('Discount applied to quick-resale catalog!')">Trigger Quick-Liquidation Discount</button>
+        </div>
+      `,
+      tquality: `
+        <div class="hero"><h2>📸 Inward Crop Quality Verification</h2><p class="muted">Review AI computer vision diagnostic scores and certified FPO inspection certificates.</p></div>
+        <div class="card"><div class="score-box"><div class="circle-score">91</div><div><b>Batch #LOT-882: Tomato Grade A</b><p class="muted">Freshness: 94% &bull; Surface Defect: 2.1% &bull; Inspector Verified: Yes</p></div></div></div>
+      `,
+      ttransport: `
+        <div class="hero"><h2>🚚 Transport Booking & Vehicle Matching</h2><p class="muted">Book local transport based on cargo payload, distance, and refrigerated capabilities.</p></div>
+        <div class="card"><div class="vehicle selected"><div class="vehicle-header"><b>🚚 Tata 407 Carrier</b> &bull; Capacity: 2.5 MT <span class="cost">₹3,200</span></div><button class="btn small" onclick="showToast('Transport booked!')">Assign Fleet</button></div></div>
+      `,
+      tpooling: `
+        <div class="hero"><h2>🚛 Shared Logistics & Pooling Portal ⭐</h2><p class="muted">Consolidate multiple farm pick-up points on a single freight carrier.</p></div>
+        <div class="card"><div class="alert ok"><b>3 Farm Pickup Consolidation Available:</b> Route Mathura → Palwal → Rohtak. Sharing drops vehicle freight by 52%.</div><button class="btn" style="margin-top:10px" onclick="showToast('Vehicle shared across 3 farms!')">Confirm Route Pool</button></div>
+      `,
+      tmap: `
+        <div class="hero"><h2>🗺️ AI Route Navigation & Delivery Map</h2><p class="muted">Optimal highway corridor navigation minimizing road bumps and transit delays.</p></div>
+        <div class="card"><div class="map"><div class="road"></div><div class="pin farm">🌾</div><div class="pin hub">🏭</div><div class="pin buyer">🏢</div></div><p class="muted" style="margin-top:10px">Estimated Travel Time: <b>2h 10m</b> &bull; Tolls: <b>₹180</b></p></div>
+      `,
+      torders: `
+        <div class="hero"><h2>📑 Complete Order Lifecycle Management</h2><p class="muted">Requested → Accepted → Packed → Pickup → Transit → Delivered</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Order #</th><th>Type</th><th>Party</th><th>Crop & Volume</th><th>Status</th><th>Milestone</th></tr></thead>
+            <tbody>
+              <tr><td>#ORD-771</td><td>Inbound (Buy)</td><td>Kisan Mitra</td><td>Tomato 500 Kg</td><td><span class="badge">In Transit</span></td><td>Pickup Done &bull; ETA 45m</td></tr>
+              <tr><td>#ORD-772</td><td>Outbound (Sell)</td><td>Metro Supermarket</td><td>Potato 1,200 Kg</td><td><span class="badge assigned">Packed</span></td><td>Driver Assigned</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+      ttrack: `
+        <div class="hero"><h2>📍 Live Fleet GPS Telemetry</h2><p class="muted">Monitor real-time truck position, speed, and cold-chain temperature status.</p></div>
+        <div class="card"><div class="status-box"><b>Truck HR-26 AB 4521:</b> 12 km from Warehouse &bull; Temperature: <b>16°C</b> &bull; Speed: <b>52 km/h</b></div></div>
+      `,
+      tratings: `
+        <div class="hero"><h2>⭐ Ratings, Feedback & Reliability Matrix</h2><p class="muted">Two-way performance feedback between farmers, logistics carriers, and trade partners.</p></div>
+        <div class="card"><p><b>Kisan Mitra:</b> 4.9/5 ⭐ (Grade accuracy: 98%, On-time packing: 100%)</p><p><b>Raj Logistics:</b> 4.7/5 ⭐ (Careful transit, zero crate breakage)</p></div>
+      `,
+      ttrust: `
+        <div class="hero"><h2>🔐 Verification, Escrow & Fraud Protection</h2><p class="muted">Verified GSTIN validation, counterparty KYC checks, and protected bank escrow accounts.</p></div>
+        <div class="card"><div class="grid g4"><div class="card"><h3 class="green">✓ GSTIN Verified</h3></div><div class="card"><h3 class="green">✓ FSSAI Valid</h3></div><div class="card"><h3 class="green">✓ Bank Escrow</h3></div><div class="card"><h3 class="green">✓ Dispute Cover</h3></div></div></div>
+      `,
+      tinvoice: `
+        <div class="hero"><h2>📄 Digital Tax Invoices & Delivery Receipts</h2><p class="muted">Generate standardized GST e-invoices, weighbridge receipts, and digital proofs of delivery.</p></div>
+        <div class="card"><p>Invoice #INV-2026-8812 &bull; Buyer: Metro Supermarket &bull; Amount: <b>₹38,400</b></p><button class="btn small" onclick="showToast('Tax Invoice PDF Generated!')">Download Signed Invoice</button></div>
+      `,
+      tpayments: `
+        <div class="hero"><h2>💳 B2B Payments & Escrow Ledger</h2><p class="muted">UPI, RTGS, Escrow releases, pending accounts receivable, and trade credit lines.</p></div>
+        <div class="card"><div class="row space"><span>Pending Receivables: <b>₹48,200</b></span><span class="green">Completed Settlements: <b>₹1,88,500</b></span></div></div>
+      `,
+      tanalytics: `
+        <div class="hero"><h2>📊 Business Analytics & Margin Trends</h2><p class="muted">Commodity-wise purchasing curves, selling margins, freight expenses, and net profit.</p></div>
+        <div class="card"><div class="metric green">+₹32,400 Net Profit</div><p class="muted">This week's trade spread after freight and storage overheads.</p></div>
+      `,
+      tsmartalerts: `
+        <div class="hero"><h2>🔔 AI Smart Notifications Center</h2><p class="muted">Instant push alerts on price surges, supplier arrivals, and warehouse threshold breaches.</p></div>
+        <div class="card"><div class="alert ok">● <b>Price Surge Alert:</b> Wheat bids up by ₹50/quintal in neighboring wholesale yard.</div><div class="alert" style="margin-top:8px">● <b>Logistics Alert:</b> Truck HR-26 AB 4521 has reached collection point.</div></div>
+      `,
+      tsupport: `
+        <div class="hero"><h2>🆘 Trade Help & Dispute Resolution Center</h2><p class="muted">Lodge arbitrations for weighbridge weight mismatches, grading disputes, or transit delays.</p></div>
+        <div class="card"><div class="field"><label>Dispute Type</label><select><option>Weight Discrepancy at Inward Scale</option><option>Quality Grade Mismatch on Delivery</option><option>Payment Release Delay</option></select></div><textarea rows="3" placeholder="Describe the dispute context..."></textarea><button class="btn" style="margin-top:10px" onclick="showToast('Trade dispute filed! FasalSetu arbitrator assigned.')">Submit Dispute</button></div>
+      `
+    }
+  };
+}
+
+/* ================= 20-FEATURE COMPLETE RESTAURANT/HOTEL/BULK CONSUMER SUITE ================= */
+function getConsumerPages() {
+  const isHi = currentLang === 'hi';
+  return {
+    nav: [
+      ['cdash', '🏠', isHi ? 'किचन डैशबोर्ड' : 'Consumer Dashboard'],
+      ['cbrowse', '🔎', isHi ? 'फसल खोजें (Browse)' : 'Search & Browse Crops'],
+      ['crecommend', '🤖', isHi ? 'AI स्मार्ट सुझाव' : 'AI Smart Recommendation'],
+      ['cquality', '⭐', isHi ? 'किसान व क्वालिटी जांच' : 'Farmer & Crop Quality'],
+      ['ctransparency', '💰', isHi ? 'प्राइस ट्रांसपेरेंसी (USP)' : 'Price Transparency — Main USP'],
+      ['cdirectbuy', '🛒', isHi ? 'डायरेक्ट बल्क कार्ट' : 'Direct Buy / Cart'],
+      ['cconnect', '🤝', isHi ? 'किसान से सीधा संपर्क' : 'Direct Farmer Connection'],
+      ['cnego', '💬', isHi ? 'AI नेगोशिएशन असिस्टेंट' : 'AI Negotiation Assistant'],
+      ['cdelivery', '🚚', isHi ? 'स्मार्ट डिलीवरी' : 'Smart Delivery'],
+      ['croute', '🗺️', isHi ? 'मैप व डिलीवरी रूट' : 'Map & Route'],
+      ['ctrack', '📦', isHi ? 'ऑर्डर ट्रैकिंग' : 'Order Tracking'],
+      ['cpayment', '💳', isHi ? 'पेमेंट्स व इनवॉइस' : 'Payment & Invoices'],
+      ['crecurring', '🔄', isHi ? 'रेकरिंग ऑर्डर्स' : 'Recurring Orders'],
+      ['ccompare', '📊', isHi ? 'प्राइस कम्पेरिजन' : 'Consumer Price Comparison'],
+      ['calerts', '🔔', isHi ? 'स्मार्ट अलर्ट्स' : 'Smart Alerts'],
+      ['cwishlist', '❤️', isHi ? 'पसंदीदा किसान' : 'Wishlist / Favorite Farmers'],
+      ['crating', '⭐', isHi ? 'रेटिंग व रिव्यू' : 'Rating & Review'],
+      ['cdispute', '🛡️', isHi ? 'विवाद व समाधान' : 'Trust & Dispute System'],
+      ['cseasonal', '🧠', isHi ? 'सीजनल सुझाव' : 'AI Demand-Based Suggestions']
+    ],
+    pages: {
+      cdash: `
+        <div class="hero">
+          <h2>${isHi ? 'कमर्शियल किचन व बल्क प्रोक्योरमेंट पोर्टल 🍽️' : 'Commercial Kitchen & Bulk Procurement Portal 🍽️'}</h2>
+          <p class="muted">Direct farmgate supply for hotels, restaurants, hostels, and canteens (Zero middleman markup).</p>
+        </div>
+        <div class="grid g4">
+          <div class="card"><div class="muted">Nearby Verified Farms</div><div class="metric green">18 Farms</div><div class="muted">Within 25 km radius</div></div>
+          <div class="card"><div class="muted">Active Deliveries</div><div class="metric blue">2 Shipments</div><div class="muted">ETA: Today 4:30 PM</div></div>
+          <div class="card"><div class="muted">Estimated Savings</div><div class="metric green">₹14,200</div><div class="muted">23% saved vs local mandi</div></div>
+          <div class="card"><div class="muted">Standing Routines</div><div class="metric orange">3 Active</div><div class="muted">Mon / Wed / Fri Auto-order</div></div>
+        </div>
+        <div class="grid g2" style="margin-top:16px">
+          <div class="card">
+            <div class="row space">
+              <h3>🌾 Fresh Harvest Inflow Near You</h3>
+              <button class="btn small" onclick="showPage('cbrowse')">View All</button>
+            </div>
+            <table>
+              <thead><tr><th>Produce</th><th>Grade</th><th>Available</th><th>Farmgate Price</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><b>🍅 Tomato (Vaishali)</b></td><td><span class="badge grade">Grade A</span></td><td>500 Kg</td><td><b>₹28/Kg</b></td><td><button class="btn small" onclick="showPage('cdirectbuy')">Order Bulk</button></td></tr>
+                <tr><td><b>🥔 Baking Potato</b></td><td><span class="badge grade">Grade A</span></td><td>1,200 Kg</td><td><b>₹21/Kg</b></td><td><button class="btn small" onclick="showPage('cdirectbuy')">Order Bulk</button></td></tr>
+                <tr><td><b>🧅 Red Onions</b></td><td><span class="badge grade">Grade B</span></td><td>800 Kg</td><td><b>₹24/Kg</b></td><td><button class="btn small" onclick="showPage('cdirectbuy')">Order Bulk</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>⚡ Direct Operations</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+              <button class="btn" onclick="showPage('cbrowse')">🔎 Search & Filter Crop Batches</button>
+              <button class="btn secondary" onclick="showPage('crecurring')">🔄 Set Auto-Order Routine for Kitchen</button>
+              <button class="btn secondary" onclick="showPage('ctransparency')">💰 Inspect Price Transparency Breakdown</button>
+            </div>
+          </div>
+        </div>
+      `,
+      cbrowse: `
+        <div class="hero"><h2>🔎 Search & Browse Bulk Farm Lots</h2><p class="muted">Filtered by Variety, Quantity, Grade, Harvest Date, Organic tag, and Distance.</p></div>
+        <div class="card">
+          <div class="grid g4">
+            <input placeholder="Search: Tomato, Potato, Onion...">
+            <select><option>All Grades (Grade A, B)</option><option>Grade A Only</option></select>
+            <select><option>Distance &lt; 20 km</option><option>Distance &lt; 50 km</option></select>
+            <select><option>Organic Certified</option><option>Conventional</option></select>
+          </div>
+        </div>
+        <div class="product-grid" style="margin-top:16px">
+          <div class="product">
+            <div class="emoji">🍅</div>
+            <h3>Fresh Tomato (Grade A)</h3>
+            <p><b>Farmer:</b> Kisan Mitra (Verified ✅) &bull; <b>Distance:</b> 12 km</p>
+            <p><b>Harvest:</b> 1 day ago &bull; <b>Available:</b> 500 Kg</p>
+            <div class="offer">₹28 / Kg</div>
+            <br><button class="btn" onclick="showPage('cdirectbuy')">Direct Buy / Order 100+ Kg</button>
+          </div>
+          <div class="product">
+            <div class="emoji">🥔</div>
+            <h3>Premium Potato (Cooking Grade)</h3>
+            <p><b>Farmer:</b> Harish Farms (Verified ✅) &bull; <b>Distance:</b> 18 km</p>
+            <p><b>Harvest:</b> 2 days ago &bull; <b>Available:</b> 1,500 Kg</p>
+            <div class="offer">₹21 / Kg</div>
+            <br><button class="btn" onclick="showPage('cdirectbuy')">Direct Buy / Order 200+ Kg</button>
+          </div>
+          <div class="product">
+            <div class="emoji">🧅</div>
+            <h3>Nasik Hybrid Onion</h3>
+            <p><b>Farmer:</b> Govardhan FPO (Verified ✅) &bull; <b>Distance:</b> 22 km</p>
+            <p><b>Harvest:</b> Freshly Cured &bull; <b>Available:</b> 3,000 Kg</p>
+            <div class="offer">₹24 / Kg</div>
+            <br><button class="btn" onclick="showPage('cdirectbuy')">Direct Buy / Order 100+ Kg</button>
+          </div>
+        </div>
+      `,
+      crecommend: `
+        <div class="hero"><h2>🤖 AI Smart Product Recommendation</h2><p class="muted">Calculated using shortest food miles, verifiable freshness, and bulk volume discounts.</p></div>
+        <div class="card">
+          <div class="alert ok">
+            <b>🌟 AI Smart Recommendation:</b><br>
+            "Farmer A's tomatoes are <b>8 km closer</b>, <b>Grade A</b>, and <b>₹4/kg cheaper</b> than the nearest alternative wholesale broker."
+          </div>
+          <div class="row space" style="margin-top:14px">
+            <div><b>Recommended Lot:</b> 250 Kg Tomato from Rohtak Cluster @ ₹27.50/Kg</div>
+            <button class="btn small" onclick="showPage('cdirectbuy')">Accept Recommendation</button>
+          </div>
+        </div>
+      `,
+      cquality: `
+        <div class="hero"><h2>⭐ Farmer & Crop Quality Verification</h2><p class="muted">Verify farmer track record, preliminary AI diagnostics, and inspection sign-offs.</p></div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Diagnostic Quality Report (Batch #TOM-882)</h3>
+            <div class="score-box" style="margin:12px 0">
+              <div class="circle-score">91</div>
+              <div><b>AI Preliminary Quality Score: 91/100</b><div class="muted">Freshness: High &bull; Blemish: &lt; 2%</div></div>
+            </div>
+            <p><b>Verified Farmer:</b> Kisan Mitra ✅ (Rating: 4.9 ★ &bull; 34 Trades)</p>
+            <p><b>Audited by:</b> FPO Quality Inspector Suresh Sharma</p>
+          </div>
+          <div class="card">
+            <h3>Verified Field Photos</h3>
+            <div class="photo-grid">
+              <div class="photo-slot">📷<br><b>[ Front View ]</b><br><small class="green">✓ Clear Skin</small></div>
+              <div class="photo-slot">📷<br><b>[ Side View ]</b><br><small class="green">✓ Uniform Red</small></div>
+              <div class="photo-slot">📷<br><b>[ Stem Freshness ]</b><br><small class="green">✓ Fresh Green</small></div>
+            </div>
+          </div>
+        </div>
+      `,
+      ctransparency: `
+        <div class="hero"><h2>💰 Price Transparency — Main USP ⭐</h2><p class="muted">Direct audit of supply chain leakage vs FasalSetu direct farm linkage.</p></div>
+        <div class="card">
+          <div class="grid g-equal">
+            <div>
+              <h4 style="color:#b52b27">Traditional Multi-Tier Route</h4>
+              <div class="chain">
+                <div class="node"><small>Farmer</small><b>₹20</b></div><span class="arrow">→</span>
+                <div class="node"><small>Trader</small><b>₹24</b></div><span class="arrow">→</span>
+                <div class="node"><small>Wholesale</small><b>₹29</b></div><span class="arrow">→</span>
+                <div class="node"><small>Retailer</small><b>₹35</b></div><span class="arrow">→</span>
+                <div class="node"><small>Kitchen</small><b>₹40</b></div>
+              </div>
+            </div>
+            <div>
+              <h4 style="color:var(--green)">FasalSetu Direct Linkage</h4>
+              <div class="chain">
+                <div class="node" style="background:#edf8f1"><small>Farmer</small><b class="green">₹27</b></div><span class="arrow">→</span>
+                <div class="node"><small>Transport</small><b>₹3</b></div><span class="arrow">→</span>
+                <div class="node" style="background:#edf8f1"><small>Kitchen</small><b class="green">₹30</b></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid g-equal" style="margin-top:20px">
+            <div class="alert ok">
+              <b>Farmer Receives: ₹27/Kg</b> (Gain: <b>+₹7/Kg</b> over mandi broker)<br>
+              <b>Intermediary Layers Skipped:</b> 2 Hops
+            </div>
+            <div class="alert ok">
+              <b>Consumer Pays: ₹30/Kg</b> (Estimated Saving: <b>₹10/Kg / 25%</b>)<br>
+              <i>*All figures reflect actual regional logistics data estimates.</i>
+            </div>
+          </div>
+        </div>
+      `,
+      cdirectbuy: `
+        <div class="hero"><h2>🛒 Commercial Kitchen Direct Buy / Cart (Bulk Mode)</h2><p class="muted">Order 50 kg, 100 kg, 500 kg+ bulk volumes with delivery scheduling.</p></div>
+        <div class="card" style="max-width:700px">
+          <div class="field"><label>Select Produce Lot</label><input value="Tomato Grade A (Kisan Mitra Farm)" readonly></div>
+          <div class="grid g-equal">
+            <div class="field">
+              <label>Select Bulk Quantity</label>
+              <select id="bulkQtySelect">
+                <option value="50">50 Kg (Commercial Crate)</option>
+                <option value="100" selected>100 Kg (Kitchen Bulk)</option>
+                <option value="250">250 Kg (Banquet / Event)</option>
+                <option value="500">500 Kg (Institutional Supply)</option>
+              </select>
+            </div>
+            <div class="field"><label>Select Delivery Date</label><input type="date" value="2026-09-06"></div>
+          </div>
+          <div class="grid g-equal">
+            <div class="field"><label>Packaging Preference</label><select><option>Plastic Stackable Crates (Reusable)</option><option>Jute Gunny Bags (50 Kg)</option></select></div>
+            <div class="field"><label>Delivery Slot</label><select><option>Early Morning 5:00 AM - 7:00 AM</option><option>Afternoon 1:00 PM - 3:00 PM</option></select></div>
+          </div>
+          <button class="primary-btn" onclick="showToast('✓ 100 Kg Order placed directly with Farmer!')">PLACE BULK KITCHEN ORDER</button>
+        </div>
+      `,
+      cconnect: `
+        <div class="hero"><h2>🤝 Direct Farmer Connection & In-App Chat</h2><p class="muted">Discuss batch readiness and logistics via masked, secure in-app communication.</p></div>
+        <div class="card">
+          <p><b>Connected Farmer:</b> Kisan Mitra (Rohtak Cluster) &bull; <i>Number Masking Active 🛡️</i></p>
+          <div class="status-box">
+            <p><b>Chef Rahul:</b> "Do you have 200 Kg of firm salad tomatoes ready for dispatch Thursday morning?"</p>
+            <p><b>Farmer:</b> "Yes, harvested Wednesday evening. Can load by 5 AM."</p>
+          </div>
+          <div class="field"><input placeholder="Type inquiry to farmer..."><button class="btn small" style="margin-top:6px" onclick="showToast('Message sent!')">Send Direct Message</button></div>
+        </div>
+      `,
+      cnego: `
+        <div class="hero"><h2>💬 AI Negotiation Assistant</h2><p class="muted">Automated bids: "Mujhe 100 kg tomato chahiye ₹25/kg mein."</p></div>
+        <div class="card">
+          <div class="field"><label>Your Target Requirement & Target Price</label><input value="100 Kg Tomato @ ₹25/Kg"></div>
+          <button class="btn" onclick="showToast('AI analyzed 4 nearby farmer counters!')">Run AI Counter-Offer Analysis</button>
+          <div class="status-box" style="margin-top:14px">
+            <b>AI Counter-Offer Engine:</b><br>
+            Farmer offered ₹28/kg. AI suggests <b>₹26.50/kg</b> based on 100kg bulk volume and same-corridor pickup.<br>
+            <div style="display:flex;gap:10px;margin-top:8px">
+              <button class="btn small" onclick="showToast('Counter-bid of ₹26.50/kg sent!')">Send AI Counter (₹26.50/kg)</button>
+              <button class="btn small secondary" onclick="showToast('Declined.')">Decline</button>
+            </div>
+          </div>
+        </div>
+      `,
+      cdelivery: `
+        <div class="hero"><h2>🚚 Smart Delivery & Vehicle Allocation</h2><p class="muted">AI selects nearest vehicle, lowest freight cost, and cold-chain protection.</p></div>
+        <div class="card">
+          <div class="vehicle selected">
+            <div class="vehicle-header"><b>🚚 Reefer Pickup (Cold-Chain Temp: 14°C)</b> <span class="badge assigned">AI Best Route</span></div>
+            <p class="muted">Driver: Ramesh (+91 Masked) &bull; Vehicle: HR-26 AB 4521 &bull; <b>ETA: 1h 15m</b></p>
+            <div class="cost">₹650 freight</div>
+          </div>
+        </div>
+      `,
+      croute: `
+        <div class="hero"><h2>🗺️ Live Route & Food Miles Map</h2><p class="muted">Farmer Origin → Hub Sort → Kitchen Gate</p></div>
+        <div class="card"><div class="map"><div class="road"></div><div class="pin farm">🌾</div><div class="pin hub">🏭</div><div class="pin buyer">🍽️</div></div><p class="muted" style="margin-top:10px">Total Distance: <b>24 km</b> &bull; Transit Carbon Offset: <b>-32%</b></p></div>
+      `,
+      ctrack: `
+        <div class="hero"><h2>📦 Order Tracking Status</h2><p class="muted">Milestones from harvest packing to kitchen dock delivery.</p></div>
+        <div class="card">
+          <div class="track-line" style="margin:20px 0">
+            <div class="track-item"><div class="dot done">✓</div><b>Placed</b></div>
+            <div class="track-item"><div class="dot done">✓</div><b>Farmer Accepted</b></div>
+            <div class="track-item"><div class="dot done">✓</div><b>Packed</b></div>
+            <div class="track-item"><div class="dot current">4</div><b>In Transit</b></div>
+            <div class="track-item"><div class="dot">5</div><b>Delivered</b></div>
+          </div>
+          <div class="status-box"><b>Status:</b> Truck en-route on Highway bypass &bull; 8 km away from hotel kitchen dock.</div>
+        </div>
+      `,
+      cpayment: `
+        <div class="hero"><h2>💳 B2B Payment & GST Tax Invoices</h2><p class="muted">Pay via UPI, Corporate Card, NetBanking, or Digital Wallet.</p></div>
+        <div class="card"><div class="row space"><span>Invoice #GST-8812 &bull; 100 Kg Tomato</span><b class="green">₹2,800 Paid via Escrow</b></div><button class="btn small secondary" style="margin-top:10px" onclick="showToast('Invoice PDF Downloaded!')">Download GST Invoice</button></div>
+      `,
+      crecurring: `
+        <div class="hero"><h2>🔄 Standing Recurring Orders (Kitchen Schedules)</h2><p class="muted">Automate recurring kitchen requirements without repetitive daily ordering.</p></div>
+        <div class="card">
+          <p><b>Active Kitchen Schedules:</b></p>
+          <ul>
+            <li>Every Monday: <b>50 Kg Potato</b> (Direct from Harish Farm)</li>
+            <li>Every Wednesday: <b>100 Kg Tomato</b> (Direct from Kisan Mitra)</li>
+            <li>Every Saturday: <b>150 Kg Mixed Greens</b></li>
+          </ul>
+          <button class="btn small" onclick="showToast('Recurring standing order created!')">+ Add New Recurring Weekly Rule</button>
+        </div>
+      `,
+      ccompare: `
+        <div class="hero"><h2>📊 Consumer Price Comparison Matrix</h2><p class="muted">Compare same-crop bulk offers across multiple nearby farmers and wholesalers.</p></div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Seller</th><th>Price</th><th>Quality Grade</th><th>Distance</th><th>AI Verdict</th></tr></thead>
+            <tbody>
+              <tr style="background:#f4fbf6"><td><b>Farmer A (Kisan Mitra)</b></td><td><b class="green">₹26/kg</b></td><td>Grade A</td><td>8 km</td><td><span class="badge">Best Overall Option</span></td></tr>
+              <tr><td><b>Farmer B (Govardhan)</b></td><td>₹28/kg</td><td>Grade A+</td><td>15 km</td><td>High Quality</td></tr>
+              <tr><td><b>Wholesale Broker Yard</b></td><td>₹30/kg</td><td>Grade A</td><td>20 km</td><td>Standard</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+      calerts: `
+        <div class="hero"><h2>🔔 Smart Procurement Alerts</h2><p class="muted">Notifications on price drops, harvest arrivals, and favourite farmer listings.</p></div>
+        <div class="card"><div class="alert ok">● <b>Price Drop:</b> Fresh cauliflower down by ₹6/Kg from Jhajjar farmers.</div><div class="alert" style="margin-top:8px">● <b>Harvest Arrival:</b> Favorite farmer (Kisan Mitra) listed fresh spinach lot.</div></div>
+      `,
+      cwishlist: `
+        <div class="hero"><h2>❤️ Favorite Farmers & Preferred Batches</h2><p class="muted">Quick-reorder from trusted producers who have met your kitchen standards.</p></div>
+        <div class="card"><p>❤️ <b>Kisan Mitra</b> (Vegetable Specialist &bull; 4.9 ★) &bull; <i>Last Ordered: Yesterday</i></p><button class="btn small" onclick="showPage('cdirectbuy')">Reorder Recent Batch</button></div>
+      `,
+      crating: `
+        <div class="hero"><h2>⭐ Supplier Rating & Culinary Feedback</h2><p class="muted">Rate crop freshness, weight accuracy, crate quality, and driver timeliness.</p></div>
+        <div class="card"><p>Rate Batch #ORD-1023:</p><div style="font-size:24px;color:orange">★★★★★</div><p class="muted">"Uniform size, zero transit damage, arrived at 6:00 AM sharp."</p></div>
+      `,
+      cdispute: `
+        <div class="hero"><h2>🛡️ Trust & Dispute Resolution System</h2><p class="muted">Lodge disputes for quantity shortage, grading differences, or damaged transit boxes.</p></div>
+        <div class="card">
+          <div class="field"><label>Select Dispute Reason</label><select><option>Quantity Shortage on Kitchen Scale</option><option>Quality / Grading Mismatch</option><option>Transit Crushed / Damaged Produce</option></select></div>
+          <div class="field"><label>Upload Photo Proof</label><input type="file"></div>
+          <button class="btn" onclick="showToast('Dispute ticket raised! Refund hold active in escrow.')">Raise Dispute to Escrow Officer</button>
+        </div>
+      `,
+      cseasonal: `
+        <div class="hero"><h2>🧠 AI Seasonal & Fresh Product Guidance</h2><p class="muted">Predictive menu planning based on peak harvest seasons and price troughs.</p></div>
+        <div class="card"><div class="alert ok">"Mango season is starting. Nearby certified orchards have fresh Kesar and Dasheri lots available for immediate bulk procurement."</div></div>
+      `
+    }
+  };
+}
+
+/* ================= 12-FEATURE DRIVER / TRANSPORT PARTNER SUITE ================= */
+function getDriverPages() {
+  const isHi = currentLang === 'hi';
+  return {
+    nav: [
+      ['ddash', '🏠', isHi ? 'ड्राइवर डैशबोर्ड' : 'Driver Dashboard'],
+      ['djobs', '📋', isHi ? 'उपलब्ध जॉब्स (Job Feed)' : 'Available Job Feed'],
+      ['dpooled', '🚛', isHi ? 'पूल्ड / मल्टी-स्टॉप रूट' : 'Pooled / Multi-Stop Routes'],
+      ['dactive', '🚚', isHi ? 'चालू ट्रिप' : 'Active Trip'],
+      ['dnav', '🗺️', isHi ? 'नेविगेशन व मैप' : 'Navigation & Map'],
+      ['dpod', '📸', isHi ? 'डिलीवरी प्रमाण (POD)' : 'Proof of Delivery'],
+      ['dvehicle', '🛻', isHi ? 'वाहन प्रोफाइल' : 'Vehicle Profile'],
+      ['dearnings', '💰', isHi ? 'कमाई व भुगतान' : 'Earnings & Payouts'],
+      ['dhistory', '📑', isHi ? 'ट्रिप हिस्ट्री' : 'Trip History'],
+      ['dratings', '⭐', isHi ? 'रेटिंग व रिव्यू' : 'Ratings & Reviews'],
+      ['dalerts', '🔔', isHi ? 'स्मार्ट अलर्ट्स' : 'Smart Alerts'],
+      ['dsupport', '🆘', isHi ? 'हेल्प व विवाद' : 'Help & Dispute Center']
+    ],
+    pages: {
+      ddash: `
+        <div class="hero">
+          <h2>${isHi ? 'सुप्रभात, ' + driverProfile.name + ' 🚚' : 'Good Morning, ' + driverProfile.name + ' 🚚'}</h2>
+          <p class="muted">${isHi ? 'आज के जॉब्स, चालू ट्रिप और कमाई का सारांश।' : "Today's jobs, active trip, and earnings summary."}</p>
+        </div>
+        <div class="grid g4">
+          <div class="card"><div class="muted">Available Jobs</div><div class="metric green">3 Nearby</div><div class="muted">Within 40 km radius</div></div>
+          <div class="card"><div class="muted">Active Trip</div><div class="metric blue">${driverActiveTrip.id}</div><div class="muted">Stage ${driverActiveTrip.stage} of 4</div></div>
+          <div class="card"><div class="muted">This Week's Earnings</div><div class="metric green">₹9,850</div><div class="muted">6 Trips Completed</div></div>
+          <div class="card"><div class="muted">Rating</div><div class="metric orange">4.8 ★</div><div class="muted">42 Trips Rated</div></div>
+        </div>
+        <div class="grid g2" style="margin-top:16px">
+          <div class="card">
+            <div class="row space">
+              <h3>🚚 Current Active Trip</h3>
+              <span class="badge assigned">In Progress</span>
+            </div>
+            <div class="status-box">
+              <p><b>Route:</b> ${driverActiveTrip.route}</p>
+              <p><b>Cargo:</b> ${driverActiveTrip.cargo}</p>
+              <p><b>Shipper:</b> ${driverActiveTrip.shipper} &bull; <b>Receiver:</b> ${driverActiveTrip.receiver}</p>
+              <p><b>Payout:</b> <span class="green">${driverActiveTrip.payout}</span></p>
+            </div>
+            <button class="btn small" style="margin-top:10px" onclick="showPage('dactive')">Manage This Trip</button>
+          </div>
+          <div class="card">
+            <h3>⚡ Quick Actions</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+              <button class="btn" onclick="showPage('djobs')">📋 View Available Job Feed</button>
+              <button class="btn secondary" onclick="showPage('dpooled')">🚛 Check Pooled Routes</button>
+              <button class="btn secondary" onclick="showPage('dearnings')">💰 View This Week's Payouts</button>
+            </div>
+          </div>
+        </div>
+      `,
+
+      djobs: `
+        <div class="hero">
+          <h2>📋 Available Job Feed</h2>
+          <p class="muted">Nearby pickup requests matched to your vehicle type and base location.</p>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Job ID</th><th>Route</th><th>Distance</th><th>Cargo</th><th>Pickup Time</th><th>Payout</th><th>Action</th></tr></thead>
+            <tbody>
+              ${driverJobFeed.map(j => `
+              <tr>
+                <td><b>${j.id}</b>${j.stops > 1 ? ' <span class="badge">Pooled ('+j.stops+' stops)</span>' : ''}</td>
+                <td>${j.route}</td>
+                <td>${j.distance}</td>
+                <td>${j.cargo}</td>
+                <td>${j.pickupTime}</td>
+                <td><b class="green">${j.payout}</b></td>
+                <td>
+                  <button class="btn small" onclick="acceptJob('${j.id}')">Accept</button>
+                  <button class="btn small secondary" onclick="rejectJob('${j.id}')">Decline</button>
+                </td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      `,
+
+      dpooled: `
+        <div class="hero">
+          <h2>🚛 Pooled / Multi-Stop Route Jobs</h2>
+          <p class="muted">Combined pickups from multiple farmers along the same corridor for a single haul.</p>
+        </div>
+        <div class="card">
+          <div class="alert ok">
+            <b>🎉 Pooling Match:</b> 3 farm pickups consolidated on the Mathura → Palwal → Rohtak corridor. Combined payout beats running 3 separate solo trips.
+          </div>
+          <table style="margin-top:14px">
+            <thead><tr><th>Stop</th><th>Farmer</th><th>Village</th><th>Cargo</th><th>Load/Unload</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Kisan Mitra</td><td>Mathura</td><td>Tomato 300 Kg</td><td>Pickup</td></tr>
+              <tr><td>2</td><td>Mahesh</td><td>Govardhan (4 km)</td><td>Potato 400 Kg</td><td>Pickup</td></tr>
+              <tr><td>3</td><td>Hari</td><td>Chaumuha (6 km)</td><td>Onion 200 Kg</td><td>Pickup</td></tr>
+              <tr style="background:#f4fbf6;font-weight:700"><td>4</td><td colspan="2">Sector 18 Warehouse</td><td>900 Kg Total</td><td>Drop-off</td></tr>
+            </tbody>
+          </table>
+          <div class="row space" style="margin-top:16px">
+            <span class="green" style="font-weight:700">Combined Trip Payout: ₹3,200</span>
+            <button class="btn" onclick="showToast('Pooled route JOB-502 accepted! Added to Active Trip.')">Accept Pooled Route</button>
+          </div>
+        </div>
+      `,
+
+      dactive: `
+        <div class="hero">
+          <h2>🚚 Active Trip Management</h2>
+          <p class="muted">Update milestone status as the trip progresses — this reflects instantly on the shipper's and receiver's tracking screens.</p>
+        </div>
+        <div class="card">
+          <div class="status-box">
+            <p><b>Trip:</b> ${driverActiveTrip.id} &bull; <b>Route:</b> ${driverActiveTrip.route}</p>
+            <p><b>Cargo:</b> ${driverActiveTrip.cargo}</p>
+            <p><b>Shipper:</b> ${driverActiveTrip.shipper} &bull; <b>Receiver:</b> ${driverActiveTrip.receiver}</p>
+          </div>
+          <div class="track-line" style="margin:22px 0">
+            <div class="track-item"><div class="dot done">✓</div><b>Assigned</b></div>
+            <div class="track-item"><div class="dot done">✓</div><b>Picked Up</b></div>
+            <div class="track-item"><div class="dot current">3</div><b>In Transit</b></div>
+            <div class="track-item"><div class="dot">4</div><b>Delivered</b></div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn" onclick="advanceDriverStage()">✓ Mark Next Milestone</button>
+            <button class="btn secondary" onclick="showPage('dnav')">🗺️ Open Navigation</button>
+            <button class="btn secondary" onclick="showPage('dpod')">📸 Upload Proof of Delivery</button>
+          </div>
+        </div>
+      `,
+
+      dnav: `
+        <div class="hero">
+          <h2>🗺️ Navigation & Route Map</h2>
+          <p class="muted">Live route from current pickup to next drop point, with tolls and ETA.</p>
+        </div>
+        <div class="card">
+          <div class="map">
+            <div class="road"></div>
+            <div class="pin farm">🌾</div>
+            <div class="pin hub">🏭</div>
+            <div class="pin buyer">📍</div>
+          </div>
+          <p class="muted" style="margin-top:10px">Mathura → Palwal → Delhi Terminal &bull; <b>ETA:</b> 3h 20m &bull; <b>Tolls:</b> ₹180</p>
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <button class="btn" onclick="showToast('GPS location synced with shipper & receiver!')">🔄 Sync Live Location</button>
+            <button class="btn secondary" onclick="showToast('Calling dispatch support...')">📞 Call Dispatch</button>
+          </div>
+        </div>
+      `,
+
+      dpod: `
+        <div class="hero">
+          <h2>📸 Proof of Delivery (POD)</h2>
+          <p class="muted">Confirm delivery with a photo and/or OTP shared by the receiver — releases payment from escrow.</p>
+        </div>
+        <div class="card">
+          <h3>Upload Delivery Photos</h3>
+          <div class="photo-grid">
+            <div class="photo-slot" onclick="simulateUpload(1)"><span style="font-size:26px">📷</span><br><b>[ Cargo Offloaded ]</b><br><small id="p1">Click to Upload</small></div>
+            <div class="photo-slot" onclick="simulateUpload(2)"><span style="font-size:26px">📷</span><br><b>[ Receiver Signature ]</b><br><small id="p2">Click to Upload</small></div>
+            <div class="photo-slot" onclick="simulateUpload(3)"><span style="font-size:26px">📷</span><br><b>[ Weighbridge Slip ]</b><br><small id="p3">Click to Upload</small></div>
+          </div>
+          <div class="field">
+            <label>Receiver OTP (shared by ${driverActiveTrip.receiver})</label>
+            <input placeholder="Enter 4-digit OTP">
+          </div>
+          <button class="primary-btn" onclick="confirmDelivery()">CONFIRM DELIVERY & RELEASE PAYMENT</button>
+        </div>
+      `,
+
+      dvehicle: `
+        <div class="hero">
+          <h2>🛻 Vehicle & Driver Profile</h2>
+          <p class="muted">Keep your vehicle details current so the AI matching engine assigns the right jobs.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Vehicle Details</h3>
+            <div class="row space" style="margin:10px 0"><span class="muted">Vehicle Type</span><b>${driverProfile.vehicleType}</b></div>
+            <div class="row space" style="margin:10px 0"><span class="muted">Registration No.</span><b>${driverProfile.vehicleReg}</b></div>
+            <div class="row space" style="margin:10px 0"><span class="muted">Load Capacity</span><b>${driverProfile.capacity}</b></div>
+            <div class="row space" style="margin:10px 0"><span class="muted">Base / Operating Area</span><b>${driverProfile.baseLocation}</b></div>
+            <div class="row space" style="margin:10px 0"><span class="muted">Ownership</span><b>${driverProfile.ownership}</b></div>
+            <button class="btn small" style="margin-top:8px" onclick="showToast('Vehicle profile updated!')">Edit Vehicle Details</button>
+          </div>
+          <div class="card">
+            <h3>Verification & Documents</h3>
+            <div class="grid g-equal">
+              <div class="card"><h3 class="green">✓ License Verified</h3></div>
+              <div class="card"><h3 class="green">✓ RC Verified</h3></div>
+              <div class="card"><h3 class="green">✓ Insurance Valid</h3></div>
+              <div class="card"><h3 class="green">✓ FSSAI Transport</h3></div>
+            </div>
+          </div>
+        </div>
+      `,
+
+      dearnings: `
+        <div class="hero">
+          <h2>💰 Earnings & Payouts</h2>
+          <p class="muted">Per-trip and pooled-trip settlements, released to your bank/UPI on delivery confirmation.</p>
+        </div>
+        <div class="grid g4">
+          <div class="card"><div class="muted">This Week</div><div class="metric green">₹9,850</div></div>
+          <div class="card"><div class="muted">Pending Release</div><div class="metric orange">₹650</div></div>
+          <div class="card"><div class="muted">This Month</div><div class="metric blue">₹38,400</div></div>
+          <div class="card"><div class="muted">Trips Completed</div><div class="metric green">24</div></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <table>
+            <thead><tr><th>Trip ID</th><th>Route</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              ${driverEarnings.map(e => `
+              <tr><td><b>${e.id}</b></td><td>${e.route}</td><td>${e.date}</td><td><b class="green">${e.amount}</b></td><td><span class="badge${e.status === 'Pending' ? ' assigned' : ''}">${e.status}</span></td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      `,
+
+      dhistory: `
+        <div class="hero">
+          <h2>📑 Trip History</h2>
+          <p class="muted">Complete log of past pickups and deliveries across all shippers and buyers.</p>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Trip ID</th><th>Route</th><th>Cargo</th><th>Completed</th><th>Rating Received</th></tr></thead>
+            <tbody>
+              <tr><td>#TRP-991</td><td>Mathura → Delhi</td><td>Tomato 500 Kg</td><td>2 Sept</td><td>5.0 ★</td></tr>
+              <tr><td>#TRP-988</td><td>Rohtak → Sector 18</td><td>Onion 900 Kg (Pooled)</td><td>31 Aug</td><td>4.8 ★</td></tr>
+              <tr><td>#TRP-980</td><td>Govardhan → Grand Vista</td><td>Mixed Veg 250 Kg</td><td>29 Aug</td><td>4.9 ★</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `,
+
+      dratings: `
+        <div class="hero">
+          <h2>⭐ Ratings & Reviews Received</h2>
+          <p class="muted">Feedback from farmers, traders, and kitchens on timeliness and cargo handling.</p>
+        </div>
+        <div class="card">
+          <div class="row space"><h3>Overall Rating</h3><div class="circle-score">4.8</div></div>
+          <div style="margin-top:14px">
+            <p>"Careful with crates, zero breakage, arrived exactly on time." — <b>Kisan Mitra</b> ★★★★★</p>
+            <p>"Great communication during the pooled pickup." — <b>Apex Agri Trade Co.</b> ★★★★★</p>
+            <p>"Slightly delayed by traffic but kept us updated." — <b>Grand Vista Hotel</b> ★★★★</p>
+          </div>
+        </div>
+      `,
+
+      dalerts: `
+        <div class="hero">
+          <h2>🔔 Smart Job & Route Alerts</h2>
+          <p class="muted">Notifications on new nearby jobs, pooling opportunities, and route hazards.</p>
+        </div>
+        <div class="card">
+          <div class="alert ok">● <b>New Job Nearby:</b> 250 Kg pickup available 6 km from your current location.</div>
+          <div class="alert" style="margin-top:8px">● <b>Pooling Opportunity:</b> 2 more farmers on your Mathura route — accept to raise trip payout.</div>
+          <div class="alert" style="margin-top:8px">● <b>Route Advisory:</b> Traffic congestion reported near Faridabad Bypass — alternate route suggested.</div>
+        </div>
+      `,
+
+      dsupport: `
+        <div class="hero">
+          <h2>🆘 Driver Help & Dispute Center</h2>
+          <p class="muted">Support for payout delays, route issues, cargo disputes, or vehicle breakdowns.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Raise a Ticket</h3>
+            <div class="field">
+              <label>Issue Category</label>
+              <select id="driverIssueCat">
+                <option>Payout Delay</option>
+                <option>Cargo Weight / Damage Dispute</option>
+                <option>Vehicle Breakdown / Emergency</option>
+                <option>Shipper / Receiver No-Show</option>
+                <option>App or GPS Issue</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Describe the issue</label>
+              <textarea rows="3" placeholder="Explain your concern..."></textarea>
+            </div>
+            <button class="btn" onclick="showToast('Ticket created! Support will call in 15 minutes.')">Submit Ticket</button>
+          </div>
+          <div class="card">
+            <h3>Driver Helpline</h3>
+            <div class="status-box">
+              <p>📞 <b>24x7 Driver Support:</b> 1800-180-SETU-D</p>
+              <p>💬 <b>Driver WhatsApp Desk:</b> +91 98765-TRUCK</p>
+              <p>🛡️ <b>Breakdown Assistance:</b> Emergency roadside help dispatched within 45 minutes.</p>
+            </div>
+          </div>
+        </div>
+      `
+    }
+  };
+}
+
+/* ================= CENTRAL REGISTRY FOR ALL 4 STAKEHOLDERS ================= */
+function getActiveRoleConfig(role) {
+  if (role === 'wholesaler') {
+    return {
+      config: getTraderPages(),
+      badge: i18n[currentLang].traderBadge,
+      loc: 'Trade Hub'
+    };
+  } else if (role === 'consumer') {
+    return {
+      config: getConsumerPages(),
+      badge: i18n[currentLang].consumerBadge,
+      loc: 'Commercial Kitchen'
+    };
+  } else if (role === 'driver') {
+    return {
+      config: getDriverPages(),
+      badge: i18n[currentLang].driverBadge,
+      loc: driverProfile.baseLocation
+    };
+  } else {
+    return {
+      config: getFarmerPages(),
+      badge: i18n[currentLang].verifiedBadge,
+      loc: 'Central Region'
+    };
+  }
+}
+
+/* ================= APP BUILDER ================= */
+function buildApp(role, userName) {
+  currentRole = role;
+  const activeRoleData = getActiveRoleConfig(role);
+  const pagesConfig = activeRoleData.config;
+
+  const nav = document.getElementById('nav');
+  const pagesContainer = document.getElementById('pages');
+
+  nav.innerHTML = pagesConfig.nav.map((item, idx) => `
+    <button class="${idx === 0 ? 'active' : ''}" onclick="showPage('${item[0]}', this)">
+      <span>${item[1]}</span>
+      <span>${item[2]}</span>
+    </button>
+  `).join('');
+
+  pagesContainer.innerHTML = pagesConfig.nav.map((item, idx) => `
+    <section id="page-${item[0]}" class="page ${idx === 0 ? 'active' : ''}">
+      ${pagesConfig.pages[item[0]] || '<div class="card">Under Construction</div>'}
+    </section>
+  `).join('');
+
+  document.getElementById('sidebarRole').textContent = activeRoleData.badge;
+  document.getElementById('userLabel').textContent = userName + ' • ' + activeRoleData.loc + ' ▾';
+  document.getElementById('pageTitle').textContent = pagesConfig.nav[0][2];
+}
+
+function showPage(pageId, btnElement) {
+  const activeRoleData = getActiveRoleConfig(currentRole);
+  const pagesConfig = activeRoleData.config;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + pageId);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('#nav button').forEach(b => b.classList.remove('active'));
+  if (btnElement) {
+    btnElement.classList.add('active');
+  } else {
+    const navBtn = Array.from(document.querySelectorAll('#nav button')).find(b => b.getAttribute('onclick')?.includes(`'${pageId}'`));
+    if (navBtn) navBtn.classList.add('active');
+  }
+
+  const currentNav = pagesConfig.nav.find(item => item[0] === pageId);
+  if (currentNav) document.getElementById('pageTitle').textContent = currentNav[2];
+  if (pageId === "buyers") {
+    renderBuyersTable();
+  }
+  window.scrollTo(0, 0);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 2800);
+}
+
+/* ================= BUYERS MATCHING ENGINE (MATCHED UI) ================= */
+const liveBuyersData = [
+  {
+    name: "Rakesh Traders",
+    location: "Hisar Mandi, Hisar",
+    avatar: "👨‍💼",
+    verified: false,
+    type: "Middleman",
+    distance: 5,
+    pricePerQuintal: 2050,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "Sharma Commission Agent",
+    location: "Hisar Mandi, Hisar",
+    avatar: "🧔",
+    verified: false,
+    type: "Middleman",
+    distance: 8,
+    pricePerQuintal: 1980,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "Grand Vista Hotel & Banquet",
+    location: "Gurugram (Direct Kitchen)",
+    avatar: "🍽️",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 72,
+    pricePerQuintal: 2420,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Gupta Trading Co.",
+    location: "Hisar Mandi, Hisar",
+    avatar: "👨‍💼",
+    verified: false,
+    type: "Middleman",
+    distance: 12,
+    pricePerQuintal: 2100,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "Apex Agro Processing Hub",
+    location: "Karnal Food Park",
+    avatar: "🏭",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 64,
+    pricePerQuintal: 2380,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Verma & Sons",
+    location: "Hisar Mandi, Hisar",
+    avatar: "🧔",
+    verified: false,
+    type: "Middleman",
+    distance: 18,
+    pricePerQuintal: 1950,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "GreenEarth Organics & Retail",
+    location: "Sonipat Central Hub",
+    avatar: "🌱",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 55,
+    pricePerQuintal: 2450,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Chaudhary Brothers Mandi Agents",
+    location: "Rohtak Anaj Mandi",
+    avatar: "👨‍💼",
+    verified: false,
+    type: "Middleman",
+    distance: 34,
+    pricePerQuintal: 2020,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "Jain Agri Traders",
+    location: "Hisar Mandi, Hisar",
+    avatar: "👨‍💼",
+    verified: false,
+    type: "Middleman",
+    distance: 25,
+    pricePerQuintal: 1900,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "FreshBasket Supermarkets Ltd.",
+    location: "Delhi NCR Distribution Center",
+    avatar: "🛒",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 92,
+    pricePerQuintal: 2500,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Balaji Arhtiya Association",
+    location: "Bhiwani Grain Market",
+    avatar: "🧔",
+    verified: false,
+    type: "Middleman",
+    distance: 42,
+    pricePerQuintal: 1940,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "Haryana Foods Pvt. Ltd.",
+    location: "Panipat (Direct Buyer)",
+    avatar: "🌱",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 85,
+    pricePerQuintal: 2350,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Metro Canteen & Hostel Services",
+    location: "Rohtak Institutional Zone",
+    avatar: "🍽️",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 38,
+    pricePerQuintal: 2390,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Aggarwal Mandi Dalal",
+    location: "Hansi Sabzi Mandi",
+    avatar: "👨‍💼",
+    verified: false,
+    type: "Middleman",
+    distance: 22,
+    pricePerQuintal: 1960,
+    isDirect: false,
+    highlight: false
+  },
+  {
+    name: "KisanSetu Direct Consumer Co-Op",
+    location: "Faridabad Urban Cluster",
+    avatar: "🤝",
+    verified: true,
+    type: "Direct Buyer",
+    distance: 98,
+    pricePerQuintal: 2480,
+    isDirect: true,
+    highlight: true
+  },
+  {
+    name: "Yadav Kisaan Brokerage",
+    location: "Jhajjar Mandi Yard",
+    avatar: "🧔",
+    verified: false,
+    type: "Middleman",
+    distance: 48,
+    pricePerQuintal: 2000,
+    isDirect: false,
+    highlight: false
+  }
+];
+
+function renderBuyersTable(data = liveBuyersData) {
+  const tbody = document.getElementById("buyersTableBody");
+  if (!tbody) return;
+
+  const defaultQuintal = 50;
+
+  tbody.innerHTML = data.map((b) => {
+    const totalAmount = b.pricePerQuintal * defaultQuintal;
+    const isDirect = b.isDirect;
+    
+    return `
+      <tr class="buyer-row ${b.highlight ? 'direct-buyer-highlight' : ''}">
+        <td>
+          <div class="buyer-identity">
+            <div class="buyer-avatar ${isDirect ? 'logo-icon' : ''}">${b.avatar}</div>
+            <div class="buyer-meta">
+              <b>${b.name} ${b.verified ? '<span title="Verified Direct Buyer" style="color:var(--green);font-size:14px">✔</span>' : ''}</b>
+              <small>${b.location}</small>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="type-pill ${isDirect ? 'direct' : 'middleman'}">${b.type}</span>
+        </td>
+        <td style="color:#55695e; font-weight:600">${b.distance} km</td>
+        <td>
+          <span class="price-bold ${isDirect ? 'direct-green-text' : ''}">₹ ${b.pricePerQuintal.toLocaleString('en-IN')}</span>
+        </td>
+        <td>
+          <span class="price-bold ${isDirect ? 'direct-green-text' : ''}">₹ ${totalAmount.toLocaleString('en-IN')}</span>
+        </td>
+        <td style="text-align:right">
+          <button class="btn-select-sell ${isDirect ? 'primary-fill' : ''}" onclick="selectBuyerAndSell('${b.name}', ${b.pricePerQuintal}, ${defaultQuintal}, ${isDirect})">
+            Select & Sell
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function sortBuyersList(criteria) {
+  let sorted = [...liveBuyersData];
+  if (criteria === "highest_price") {
+    sorted.sort((a, b) => b.pricePerQuintal - a.pricePerQuintal);
+  } else if (criteria === "lowest_distance") {
+    sorted.sort((a, b) => a.distance - b.distance);
+  } else if (criteria === "direct_first") {
+    sorted.sort((a, b) => (b.isDirect ? 1 : 0) - (a.isDirect ? 1 : 0));
+  }
+  renderBuyersTable(sorted);
+}
+
+function selectBuyerAndSell(buyerName, pricePerQuintal, quintals, isDirect) {
+  const total = pricePerQuintal * quintals;
+  const kgRate = (pricePerQuintal / 100).toFixed(2);
+  
+  if (isDirect) {
+    showToast(`✓ Direct Deal confirmed with ${buyerName} at ₹${pricePerQuintal}/quintal (₹${kgRate}/kg)! Total: ₹${total.toLocaleString('en-IN')}`);
+  } else {
+    showToast(`Middleman ${buyerName} selected at ₹${pricePerQuintal}/quintal. Order voucher generated.`);
+  }
+
+  // Auto-fill negotiation / order screen if you want to inspect details
+  if (typeof openNegotiation === "function") {
+    setTimeout(() => {
+      openNegotiation(buyerName, kgRate, quintals * 100);
+    }, 1200);
+  }
+}
+
+/* ================= SIMULATORS & INTERACTION LOGIC ================= */
+async function calcProfit() {
+  const payload = {
+    seeds: Number(document.getElementById('exp_seeds')?.value || 0),
+    fertilizer: Number(document.getElementById('exp_fert')?.value || 0),
+    labour: Number(document.getElementById('exp_labour')?.value || 0),
+    transport: Number(document.getElementById('exp_trans')?.value || 0),
+    misc: Number(document.getElementById('exp_misc')?.value || 0),
+    expected_revenue: Number(document.getElementById('exp_rev')?.value || 0)
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/expenses/calculate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      document.getElementById('calc_profit_val').textContent = '₹' + data.net_profit.toLocaleString('en-IN');
+      document.getElementById('calc_cost_val').textContent = '₹' + data.total_cost.toLocaleString('en-IN');
+      document.getElementById('calc_margin_val').textContent = data.margin_percentage + '%';
+
+      const costRatio = Math.min(100, (data.total_cost / (payload.expected_revenue || 1)) * 100);
+      document.getElementById('bar_cost').style.width = costRatio + '%';
+      document.getElementById('bar_margin').style.width = Math.min(100, Math.max(0, data.margin_percentage)) + '%';
+    }
+  } catch (e) {
+    const total = payload.seeds + payload.fertilizer + payload.labour + payload.transport + payload.misc;
+    const profit = payload.expected_revenue - total;
+    document.getElementById('calc_profit_val').textContent = '₹' + profit.toLocaleString('en-IN');
+    document.getElementById('calc_cost_val').textContent = '₹' + total.toLocaleString('en-IN');
+  }
+}
+
+async function postCropSubmission() {
+  const payload = {
+    crop_name: document.getElementById('cropNameField')?.value || "Tomato",
+    variety: document.getElementById('cropVariety')?.value || "Desi",
+    quantity_kg: parseFloat(document.getElementById('cropQtyField')?.value || 500),
+    expected_price: parseFloat(document.getElementById('cropPriceField')?.value || 28),
+    grade: document.getElementById('cropGradeField')?.value || "A",
+    packaging: document.getElementById('cropPackaging')?.value || "Plastic Crates"
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/crops`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      showToast(`✓ "${payload.crop_name}" saved to Database!`);
+      setTimeout(() => showPage('dash'), 1000);
+    }
+  } catch (err) {
+    showToast("Error connecting to server.");
+  }
+}
+
+function simulateUpload(slot) {
+  document.getElementById('p' + slot).textContent = "✓ Image Attached";
+  document.getElementById('p' + slot).style.color = "var(--green)";
+  showToast(`Photo ${slot} uploaded successfully!`);
+}
+
+function runAiQualityAnalysis() {
+  showToast("Running AI computer vision on batch photos...");
+  setTimeout(() => {
+    document.getElementById('qualityResults').scrollIntoView({ behavior: 'smooth' });
+    showToast("AI Grading Complete: 91/100 (Grade A)!");
+  }, 1000);
+}
+
+function acceptSuggestedPrice(p) {
+  showToast(`✓ Price locked at suggested rate: ₹${p}/kg`);
+}
+
+function setCustomPricePrompt() {
+  const p = prompt("Enter your desired price (₹/Kg):", "29");
+  if (p) showToast(`✓ Asking price set to ₹${p}/Kg`);
+}
+
+function openNegotiation(buyer, price, qty) {
+  showPage('negotiate');
+  showToast(`Negotiating with ${buyer} for ${qty} Kg!`);
+}
+
+function resolveNegotiation(action) {
+  if (action === 'accept') {
+    showToast("✓ Deal Confirmed at ₹29/kg! Order #1025 created.");
+    setTimeout(() => showPage('orders'), 1200);
+  } else if (action === 'counter') {
+    const c = prompt("Enter your counter-offer (₹/kg):", "29.50");
+    if (c) showToast(`Counter bid of ₹${c}/kg sent to buyer!`);
+  } else {
+    showToast("Offer declined.");
+  }
+}
+
+function advanceOrderStatus(orderId) {
+  showToast(`Order ${orderId} marked as Picked Up! Driver en-route.`);
+  setTimeout(() => showPage('tracking'), 1000);
+}
+
+/* Driver Role Interaction Logic */
+function acceptJob(jobId) {
+  showToast(`✓ Job ${jobId} accepted! Added to Active Trip.`);
+  setTimeout(() => showPage('dactive'), 1000);
+}
+
+function rejectJob(jobId) {
+  showToast(`Job ${jobId} declined.`);
+}
+
+function advanceDriverStage() {
+  if (driverActiveTrip.stage < 4) {
+    driverActiveTrip.stage++;
+  }
+  const labels = ['Assigned', 'Picked Up', 'In Transit', 'Delivered'];
+  showToast(`✓ Milestone updated: ${labels[driverActiveTrip.stage - 1]}`);
+  if (driverActiveTrip.stage >= 4) {
+    setTimeout(() => showPage('dpod'), 1000);
+  } else {
+    showPage('dactive');
+  }
+}
+
+function confirmDelivery() {
+  showToast(`✓ Delivery confirmed for ${driverActiveTrip.id}! Payment released from escrow.`);
+  setTimeout(() => showPage('dearnings'), 1200);
+}
+
+/* Voice Integration */
+function getSpeechRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) return null;
+  const rec = new SpeechRecognition();
+  rec.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+  return rec;
+}
+
+function listenToField(id) {
+  const rec = getSpeechRecognition();
+  if (!rec) { showToast("Voice not supported in this browser."); return; }
+  rec.onstart = () => showToast("🎙️ Listening...");
+  rec.onresult = (e) => {
+    document.getElementById(id).value = e.results[0][0].transcript;
+    showToast(`Recorded: "${e.results[0][0].transcript}"`);
+  };
+  rec.start();
+}
+
+function startVoiceInput(ctx) {
+  const rec = getSpeechRecognition();
+  if (!rec) return;
+  rec.onstart = () => showToast("🎙️ Speak your mobile number or command...");
+  rec.onresult = (e) => {
+    const t = e.results[0][0].transcript;
+    const digits = t.replace(/\D/g, '');
+    if (digits.length >= 10) {
+      document.getElementById('contact').value = digits.slice(-10);
+      showToast("Mobile set: " + digits.slice(-10));
+    } else {
+      showToast("Recognized: " + t);
+    }
+  };
+  rec.start();
+}
+
+function readCurrentPageAloud() {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const activePage = document.querySelector('.page.active');
+  const text = activePage ? activePage.innerText.slice(0, 300) : "FasalSetu Platform";
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+  window.speechSynthesis.speak(utter);
+  showToast("🔊 Audio Playing...");
+}
+</script>
+</body>
+</html>
