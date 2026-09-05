@@ -1030,122 +1030,29 @@ function authMode(m) {
   document.getElementById('authBtn').textContent = m === 'login' ? 'Sign In' : 'Register Account';
 }
 
-async function loadRealUserData(userId) {
-  try {
-    // 1. Fetch real crops from DB
-    const res = await fetch(`${API_BASE}/farmer/crops/${userId}`, {
-      headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
-    });
-    const realCrops = await res.json();
-
-    const tbody = document.getElementById("farmerCropsTableBody");
-    const countBadge = document.getElementById("activeCropsCountMetric");
-
-    if (tbody) {
-      if (!realCrops || realCrops.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">${currentLang === 'hi' ? 'कोई फसल उपलब्ध नहीं है। कृपया "नई फसल जोड़ें" पर क्लिक करें।' : 'No crops listed yet. Click "+ Add New Crop" to list your harvest.'}</td></tr>`;
-        if (countBadge) countBadge.textContent = "0 Kg";
-      } else {
-        tbody.innerHTML = realCrops.map(c => `
-          <tr>
-            <td><b>${c.crop_name}</b></td>
-            <td>${c.quantity_kg} Kg</td>
-            <td>₹${c.price_per_kg}/kg</td>
-            <td><b class="green">₹${c.price_per_kg}/kg</b></td>
-            <td><span class="badge">${c.status}</span></td>
-          </tr>
-        `).join("");
-        const totalQty = realCrops.reduce((acc, c) => acc + c.quantity_kg, 0);
-        if (countBadge) countBadge.textContent = `${totalQty} Kg`;
-      }
-    }
-  } catch (e) {
-    console.log("Using default clean state", e);
-  }
-}
-
-function fetchLiveGpsLocation() {
-  if (!navigator.geolocation) {
-    showToast("Geolocation is not supported by your browser");
-    return;
-  }
-  showToast(currentLang === 'hi' ? "लाइव लोकेशन प्राप्त की जा रही है..." : "Detecting live GPS location...");
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
-    const locField = document.getElementById("cropLocField") || document.getElementById("villageInput");
-    if (locField) {
-      locField.value = `GPS: ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
-    }
-    showToast(currentLang === 'hi' ? "लाइव लोकेशन सेट हो गई!" : "Live GPS Location captured!");
-  }, (err) => {
-    showToast("GPS Permission Denied or Timeout");
-  });
-}
-
-async function runAiQualityAnalysis() {
-  showToast(currentLang === 'hi' ? "फसल फोटो का AI कंप्यूटर विजन विश्लेषण चालू है..." : "Running AI computer vision analysis...");
-  try {
-    const crop = document.getElementById('cropNameField')?.value || "Tomato";
-    const res = await fetch(`${API_BASE}/ai/grade-crop`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ crop_name: crop })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      document.querySelector('.circle-score').textContent = data.quality_score;
-      document.getElementById('qualityResults').scrollIntoView({ behavior: 'smooth' });
-      showToast(`${currentLang === 'hi' ? 'AI जांच पूर्ण:' : 'AI Diagnostic Complete:'} ${data.assigned_grade} (${data.quality_score}/100)`);
-    }
-  } catch (err) {
-    showToast("AI Vision Service running locally");
-  }
-}
-
-async function fetchAiPriceGuidance() {
-  const crop = document.getElementById('cropNameField')?.value || "Tomato";
-  try {
-    const res = await fetch(`${API_BASE}/ai/price-demand-prediction`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ crop_name: crop, location: "Central Region" })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      showToast(`${data.crop}: AI Optimum ₹${data.optimal_point_per_kg}/kg (${data.market_demand_status})`);
-    }
-  } catch (e) {
-    console.error(e);
-  }
-}
-
 async function validateAndEnterApp() {
   const name = document.getElementById('userNameInput').value.trim();
   const contact = document.getElementById('contact').value.trim();
   const password = document.getElementById('password').value;
   const role = document.getElementById('roleSelect').value;
 
-  if (mode === 'signup' && !name) {
+  if (!name) {
     document.getElementById('nameError').style.display = 'block';
     return;
+  } else {
+    document.getElementById('nameError').style.display = 'none';
   }
 
   if (!contact || password.length < 6) {
-    showToast(currentLang === 'hi' ? "कृपया वैध मोबाइल नंबर और न्यूनतम 6 अक्षरों का पासवर्ड डालें।" : "Enter a valid 10-digit mobile and password (min 6 chars).");
+    showToast("Enter a valid mobile/email and password (min 6 chars).");
     return;
   }
 
-  const endpoint = mode === 'signup' ? `${API_BASE}/auth/register` : `${API_BASE}/auth/login`;
-  const payload = mode === 'signup' 
-    ? { name, contact, password, role, location: document.getElementById('villageInput')?.value || "Central Region, UP" }
-    : { contact, password };
-
   try {
-    const res = await fetch(endpoint, {
+    const res = await fetch(`${API_BASE}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ name, contact, password, role })
     });
     const data = await res.json();
 
@@ -1154,23 +1061,15 @@ async function validateAndEnterApp() {
       currentRole = data.role;
       localStorage.setItem("authToken", data.token);
 
-      // KYC Check
-      if (data.kyc_status === "PENDING" && data.role === "farmer") {
-        showToast(currentLang === 'hi' ? "खाता बन गया! KYC सत्यापन लंबित है।" : "Account created! KYC Verification is pending.");
-      }
-
       document.getElementById('auth').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
-      
-      // Build clean slate dashboard
-      buildApp(currentRole, data.name || name);
-      loadRealUserData(currentUserId);
-      showToast(currentLang === 'hi' ? "सफलतापूर्वक कनेक्ट हो गए!" : "Connected successfully!");
+      buildApp(currentRole, data.name);
+      showToast("✓ Connected to Backend Database!");
     } else {
-      showToast((data.detail || "Authentication failed."));
+      showToast("Auth failed: " + (data.detail || "Invalid login"));
     }
   } catch (err) {
-    showToast("Backend connection error. Please verify server is live.");
+    showToast("Backend offline. Run 'python main.py' in the backend folder.");
   }
 }
 
@@ -3229,40 +3128,6 @@ function readCurrentPageAloud() {
   utter.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
   window.speechSynthesis.speak(utter);
   showToast("🔊 Audio Playing...");
-}
-
-async function loadRealUserData(userId) {
-  try {
-    // 1. Fetch real crops from DB
-    const res = await fetch(`${API_BASE}/farmer/crops/${userId}`, {
-      headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
-    });
-    const realCrops = await res.json();
-
-    const tbody = document.getElementById("farmerCropsTableBody");
-    const countBadge = document.getElementById("activeCropsCountMetric");
-
-    if (tbody) {
-      if (!realCrops || realCrops.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">${currentLang === 'hi' ? 'कोई फसल उपलब्ध नहीं है। कृपया "नई फसल जोड़ें" पर क्लिक करें।' : 'No crops listed yet. Click "+ Add New Crop" to list your harvest.'}</td></tr>`;
-        if (countBadge) countBadge.textContent = "0 Kg";
-      } else {
-        tbody.innerHTML = realCrops.map(c => `
-          <tr>
-            <td><b>${c.crop_name}</b></td>
-            <td>${c.quantity_kg} Kg</td>
-            <td>₹${c.price_per_kg}/kg</td>
-            <td><b class="green">₹${c.price_per_kg}/kg</b></td>
-            <td><span class="badge">${c.status}</span></td>
-          </tr>
-        `).join("");
-        const totalQty = realCrops.reduce((acc, c) => acc + c.quantity_kg, 0);
-        if (countBadge) countBadge.textContent = `${totalQty} Kg`;
-      }
-    }
-  } catch (e) {
-    console.log("Using default clean state", e);
-  }
 }
 </script>
 </body>
